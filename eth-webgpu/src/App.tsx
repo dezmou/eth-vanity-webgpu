@@ -5,10 +5,10 @@ import { gpu } from './gpu'
 function App() {
 
   useEffect(() => {
-    gpu("aaaa", "", (e: any) => {
+    gpu("aa", "bbb", (e: any) => {
       console.log(e);
-    }, () => {
-
+    }, (e:any) => {
+      console.log("STAT", e);
     })
   }, [])
 

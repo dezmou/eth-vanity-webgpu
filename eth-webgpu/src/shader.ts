@@ -1514,14 +1514,14 @@ export const shader = (nbr_thread: number) => {
             valid = false;
         }
       }
-    //   if (valid){
-    //     for (var i:u32 = 0; i<find[1];i++){
-    //       if (res16[19 - i] == find[19 - i + 2]){
-    //         continue;
-    //       }
-    //       valid = false;
-    //     }
-    //   }
+      if (valid){
+        for (var i:u32 = 0; i<find[1];i++){
+          if (res16[39 - i] == find[39 - i + 2]){
+            continue;
+          }
+          valid = false;
+        }
+      }
     if (valid){
         atomicStore(&result[0], glob[global_invocation_index].workerId + 1000);
         for (var i:u32 = 0; i< 40;i++){
