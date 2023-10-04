@@ -45,28 +45,10 @@ export const gpu = async (
     const device = await adapter.requestDevice();
     console.log(device.limits);
 
-    // 06920aba3aad84542e98e4be00453d1f359e2eb8a41133d178ec32cc7aa5ad9d
-
-    const privateKey = new Uint32Array([
-        0x06920aba,
-        0x3aad8454,
-        0x2e98e4be,
-        0x00453d1f,
-        0x359e2eb8,
-        0xa41133d1,
-        0x78ec32cc,
-        0x7aa5ad9d,
-    ].reverse())
-
     const gpuPrivateKey = device.createBuffer({
-        size: privateKey.byteLength,
+        size: 32,
         usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
     });
-    // const privateKeyBuf = gpuPrivateKey.getMappedRange();
-
-    // new Uint32Array(privateKeyBuf).set(privateKey);
-
-    // gpuPrivateKey.unmap();
 
     const buf32 = new Uint32Array({ length: 42 });
     buf32[0] = prefix.length;
@@ -75,13 +57,15 @@ export const gpu = async (
         buf32[i + 2] = find.charCodeAt(i);
     }
 
+    console.log(buf32.byteLength, buf32.length);
+
     const gpuFind = device.createBuffer({
-        size: buf32.byteLength,
+        size: 168,
         usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
     });
 
     console.log(buf32.byteLength);
-    device.queue.writeBuffer(gpuFind, 0, buf32, 0, buf32.length);
+    device.queue.writeBuffer(gpuFind, 0, buf32, 0, 42);
 
     // const gpuFindBuf = gpuFind.getMappedRange();
     // new Uint32Array(gpuFindBuf).set(buf32);
@@ -210,6 +194,7 @@ export const gpu = async (
 
         for (let i = 0; i < 10000000; i++) {
             const now = performance.now();
+            const privateKey = new Uint32Array(8);
             for (let i = 0; i < 8; i++) {
                 privateKey[i] = Math.floor(Math.random() * 0xffffffff);
                 // privateKey[i] = 0x00000000;
