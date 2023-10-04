@@ -1,41 +1,10 @@
 // import { base58_to_binary } from "base58-js";
-import { basepoint } from "./constant";
-import { shader } from "./ecdsa_shader";
+import { shader } from "./shader";
 
-declare const Base58 : any;
+declare const Base58: any;
 
-const NB_ITER = 1024;
-const NB_THREAD = 128;
-// 0xeee7b20243c07d208581a4c257ade774579fedb36922b730a3ee591de4dffe1d
-
-// const privateKey = new Uint32Array([
-//     0xf01aa848,
-//     0xbdab1314,
-//     0xead76ae8,
-//     0xa90c5acb,
-//     0xdaa874d0,
-//     0xed82095f,
-//     0xbd6e5dcd,
-//     0xf0f7d773,
-// ].reverse())
-
-
-// const to58 = (input : ArrayBuffer) => {
-//     const chien = [];
-//     for (let i = 0; i < 21; i++) {
-//         chien.push(new Uint32Array(arrayBuffer)[i])
-//         console.log(chien[i]);
-//     }
-//     for (let i = 21; i < 25; i++) {
-//         chien.push(0);
-//     }
-//     console.log(chien);
-
-//     const res = binary_to_base58(chien);
-//     console.log(res);
-//     return res;
-// }
-
+const NB_ITER = 1;
+const NB_THREAD = 1;
 
 function uint32ArrayToHexString(arr: number[]) {
     let hexStr = '';
@@ -67,40 +36,26 @@ export const gpu = async (
     stats: Function
 ) => {
     let find = prefix;
-    find += Array.from({ length: 34 - prefix.length - suffix.length }).map(() => "X").join("");
+    find += Array.from({ length: 40 - prefix.length - suffix.length }).map(() => "0").join("");
     find += suffix;
     console.log(find);
-
-    
-    const bn = Base58.decode(find)
-    if (bn[0] !== 65){
-        alert("invalid prefix")
-        return false;
-    }
 
     const adapter = await navigator.gpu.requestAdapter();
     if (!adapter) { return false; }
     const device = await adapter.requestDevice();
     console.log(device.limits);
 
-    const gpuBufBasePoints = device.createBuffer({
-        mappedAtCreation: true,
-        size: basepoint.byteLength,
-        usage: GPUBufferUsage.STORAGE,
-    });
-    const basePointsBuf = gpuBufBasePoints.getMappedRange();
-    new Uint32Array(basePointsBuf).set(basepoint);
-    gpuBufBasePoints.unmap();
+    // 06920aba3aad84542e98e4be00453d1f359e2eb8a41133d178ec32cc7aa5ad9d
 
     const privateKey = new Uint32Array([
-        0Xd6b29f86,
-        0Xd4b4857c,
-        0Xc1831b9c,
-        0Xab592428,
-        0Xa44abf23,
-        0X1bbb154c,
-        0X2e0668f8,
-        0X93c0535e,
+        0x06920aba,
+        0x3aad8454,
+        0x2e98e4be,
+        0x00453d1f,
+        0x359e2eb8,
+        0xa41133d1,
+        0x78ec32cc,
+        0x7aa5ad9d,
     ].reverse())
 
     const gpuPrivateKey = device.createBuffer({
@@ -116,7 +71,7 @@ export const gpu = async (
     const buf32 = new Uint32Array({ length: 36 });
     buf32[0] = prefix.length;
     buf32[1] = suffix.length;
-    for (let i = 0; i < 34; i++) {
+    for (let i = 0; i < 40; i++) {
         buf32[i + 2] = find.charCodeAt(i);
     }
 
@@ -158,13 +113,6 @@ export const gpu = async (
     const bindGroupLayout = (device).createBindGroupLayout({
         entries: [
             {
-                binding: 0,
-                visibility: GPUShaderStage.COMPUTE,
-                buffer: {
-                    type: "read-only-storage"
-                }
-            },
-            {
                 binding: 1,
                 visibility: GPUShaderStage.COMPUTE,
                 buffer: {
@@ -199,12 +147,6 @@ export const gpu = async (
     const bindGroup = device.createBindGroup({
         layout: bindGroupLayout,
         entries: [
-            {
-                binding: 0,
-                resource: {
-                    buffer: gpuBufBasePoints
-                }
-            },
             {
                 binding: 1,
                 resource: {
@@ -247,15 +189,15 @@ export const gpu = async (
     (async () => {
         for (let i = 0; i < 10000000; i++) {
             const now = performance.now();
-            for (let i = 0; i < 8; i++) {
-                // privateKey[i] = 0xaaaaaaaa;
-                privateKey[i] = 0x00000000;
-            }
-            // privateKey[1] = Math.floor(Math.random() * 0xffffffff);
-            privateKey[1] = i;
-    
+            // for (let i = 0; i < 8; i++) {
+            //     // privateKey[i] = 0xaaaaaaaa;
+            //     privateKey[i] = 0x00000000;
+            // }
+            // // privateKey[1] = Math.floor(Math.random() * 0xffffffff);
+            // privateKey[1] = i;
+
             device.queue.writeBuffer(gpuPrivateKey, 0, privateKey, 0, 8);
-    
+
             const commands = ["init", "step1", "step2", "step3", "step4"].map(e => {
                 const computeInitPip = device.createComputePipeline({
                     layout,
@@ -272,7 +214,7 @@ export const gpu = async (
                 passEncoder.end();
                 return commandEncoder.finish();
             })
-    
+
             const init = commands[0];
             const step1 = commands[1];
             const step2 = commands[2];
@@ -292,7 +234,7 @@ export const gpu = async (
             );
             const stepRes = stepResCommand.finish();
             const queu = []
-    
+
             queu.push(init)
             for (let i = 0; i < 256; i++) { // caution loop_start
                 queu.push(step1)
@@ -301,37 +243,43 @@ export const gpu = async (
             queu.push(step3)
             queu.push(step4)
             queu.push(stepRes)
-    
-    
+
+
             device.queue.submit(queu);
-    
+
             await gpuReadBuffer.mapAsync(GPUMapMode.READ);
             const arrayBuffer = gpuReadBuffer.getMappedRange();
-    
-            if (new Uint32Array(arrayBuffer)[0] !== 0 && new Uint32Array(arrayBuffer)[0] !== lastFoundIndex) {
-                console.log("FOUND at index worker :", new Uint32Array(arrayBuffer)[0]);
-                let str = ""
-                for (let i = 0; i < 34; i++) {
-                    str += String.fromCharCode(new Uint32Array(arrayBuffer)[i + 1]);
-                }
-                const tmp2 = [...privateKey];
-                tmp2[0] += new Uint32Array(arrayBuffer)[0] - 1000;
-                const str2 = (uint32ArrayToHexString(Array.from(tmp2)));
-                lastFoundIndex = new Uint32Array(arrayBuffer)[0];
-                found({
-                    public: str,
-                    private: str2
-                })
-                // break;
+            let str = "";
+            for (let chien of new Uint32Array(arrayBuffer)) {
+                str += `${chien.toString(16)}`
             }
-            stats({
-                nbrAddressGenerated: i * NB_THREAD * NB_ITER,
-                perSecond: Math.floor((1000 / (performance.now() - now)) * NB_THREAD * NB_ITER),
-            })
+            console.log(str);
+
+            // if (new Uint32Array(arrayBuffer)[0] !== 0 && new Uint32Array(arrayBuffer)[0] !== lastFoundIndex) {
+            //     console.log("FOUND at index worker :", new Uint32Array(arrayBuffer)[0]);
+            //     let str = ""
+            //     for (let i = 0; i < 34; i++) {
+            //         str += String.fromCharCode(new Uint32Array(arrayBuffer)[i + 1]);
+            //     }
+            //     const tmp2 = [...privateKey];
+            //     tmp2[0] += new Uint32Array(arrayBuffer)[0] - 1000;
+            //     const str2 = (uint32ArrayToHexString(Array.from(tmp2)));
+            //     lastFoundIndex = new Uint32Array(arrayBuffer)[0];
+            //     found({
+            //         public: str,
+            //         private: str2
+            //     })
+            //     // break;
+            // }
+            // stats({
+            //     nbrAddressGenerated: i * NB_THREAD * NB_ITER,
+            //     perSecond: Math.floor((1000 / (performance.now() - now)) * NB_THREAD * NB_ITER),
+            // })
             // if (i % 5 == 0) {
             //     const nbrDone = i * NB_THREAD * NB_ITER;
             //     console.log(`Number of key generated : ${nbrDone}  |  ${Math.floor((1000 / (performance.now() - now)) * NB_THREAD * NB_ITER)} per second`);
             // }
+            break;
         }
     })()
     return true;
