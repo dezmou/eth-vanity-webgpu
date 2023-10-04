@@ -251,7 +251,9 @@ export const gpu = async (
             const arrayBuffer = gpuReadBuffer.getMappedRange();
             let str = "";
             for (let chien of new Uint32Array(arrayBuffer)) {
-                str += `${chien.toString(16)}`
+                // str += `${chien.toString(16)}`
+                // str += `${chien}`
+                str += `${String.fromCharCode(chien)}`;
             }
             console.log(str);
 

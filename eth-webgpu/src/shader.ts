@@ -34,7 +34,8 @@ export const shader = (nbr_thread: number) => {
         array<u32, 2>(0x00000000, 0x80000088), array<u32, 2>(0x00000001, 0x00008000), array<u32, 2>(0x00000000, 0x80008082),
       );
   
-    
+    const base16 = array<u32, 16> (48,49,50,51,52,53,54,55,56,57,97,98,99,100,101,102);
+
     //   fn ROTLEFT(a : u32, b : u32) -> u32{return (((a) << (b)) | ((a) >> (32-(b))));}
     //   fn ROTRIGHT(a : u32, b : u32) -> u32{return (((a) >> (b)) | ((a) << (32-(b))));}
     
@@ -1498,10 +1499,15 @@ export const shader = (nbr_thread: number) => {
               i+= 1;
           }
       }
-  
-      for (var i:u32 = 0; i<20;i++){
-        result[i] = res[i+12];
+
+      for (var i : u32 = 0; i < 20; i++) {
+          result[i * 2] = base16[(res[i+12] >> 4) & 0xF];
+          result[i * 2 + 1] = base16[res[i+12] & 0xF];
       }
+
+    //   for (var i:u32 = 0; i<20;i++){
+    //     result[i] = res[i+12];
+    //   }
   
       
     //   var valid : bool = true;
