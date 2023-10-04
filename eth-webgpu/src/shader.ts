@@ -15,10 +15,10 @@ export const shader = (nbr_thread: number) => {
           loop_start : u32
       };
       
-      @group(0) @binding(1) var<storage, read_write> result : array<u32>;
-      @group(0) @binding(2) var<storage, read> privateKey : array<u32>;
-      @group(0) @binding(3) var<storage, read_write> glob : array<CTX>;
-      @group(0) @binding(4) var<storage, read> find : array<u32>;
+      @group(0) @binding(0) var<storage, read_write> result : array<u32>;
+      @group(0) @binding(1) var<storage, read> privateKey : array<u32>;
+      @group(0) @binding(2) var<storage, read_write> glob : array<CTX>;
+      @group(0) @binding(3) var<storage, read> find : array<u32>;
   
       
       const BASE_POINTS = array<u32, 96> ( 0x16f81798, 0x59f2815b, 0x2dce28d9, 0x029bfcdb, 0xce870b07, 0x55a06295, 0xf9dcbbac, 0x79be667e, 0xfb10d4b8, 0x9c47d08f, 0xa6855419, 0xfd17b448, 0x0e1108a8, 0x5da4fbfc, 0x26a3c465, 0x483ada77, 0x04ef2777, 0x63b82f6f, 0x597aabe6, 0x02e84bb7, 0xf1eef757, 0xa25b0403, 0xd95c3b9a, 0xb7c52588, 0xbce036f9, 0x8601f113, 0x836f99b0, 0xb531c845, 0xf89d5229, 0x49344f85, 0x9258c310, 0xf9308a01, 0x84b8e672, 0x6cb9fd75, 0x34c2231b, 0x6500a999, 0x2a37f356, 0x0fe337e6, 0x632de814, 0x388f7b0f, 0x7b4715bd, 0x93460289, 0xcb3ddce4, 0x9aff5666, 0xd5c80ca9, 0xf01cc819, 0x9cd217eb, 0xc77084f0, 0xb240efe4, 0xcba8d569, 0xdc619ab7, 0xe88b84bd, 0x0a5c5128, 0x55b4a725, 0x1a072093, 0x2f8bde4d, 0xa6ac62d6, 0xdca87d3a, 0xab0d6840, 0xf788271b, 0xa6c9c426, 0xd4dba9dd, 0x36e5e3d6, 0xd8ac2226, 0x59539959, 0x235782c4, 0x54f297bf, 0x0877d8e4, 0x59363bd9, 0x2b245622, 0xc91a1c29, 0x2753ddd9, 0xcac4f9bc, 0xe92bdded, 0x0330e39c, 0x3d419b7e, 0xf2ea7a0e, 0xa398f365, 0x6e5db4ea, 0x5cbdf064, 0x087264da, 0xa5082628, 0x13fde7b5, 0xa813d0b8, 0x861a54db, 0xa3178d6d, 0xba255960, 0x6aebca40, 0xf78d9755, 0x5af7d9d6, 0xec02184a, 0x57ec2f47, 0x79e5ab24, 0x5ce87292, 0x45daa69f, 0x951435bf);
@@ -1500,37 +1500,33 @@ export const shader = (nbr_thread: number) => {
           }
       }
 
+      var res16 : array<u32, 40>;
       for (var i : u32 = 0; i < 20; i++) {
-          result[i * 2] = base16[(res[i+12] >> 4) & 0xF];
-          result[i * 2 + 1] = base16[res[i+12] & 0xF];
+          res16[i * 2] = base16[(res[i+12] >> 4) & 0xF];
+          res16[i * 2 + 1] = base16[res[i+12] & 0xF];
       }
-
-    //   for (var i:u32 = 0; i<20;i++){
-    //     result[i] = res[i+12];
-    //   }
-  
       
-    //   var valid : bool = true;
-    //   for (var i:u32 = 0; i< find[0];i++){
-    //     if (finalRes[i] == find[i + 2]){
-    //       continue;
-    //     }
-    //     valid = false;
-    //   }
+      var valid : bool = true;
+      for (var i:u32 = 0; i < find[0];i++){
+        if (res16[i] == find[i + 2]){
+            continue;
+        }
+        valid = false;
+      }
     //   if (valid){
     //     for (var i:u32 = 0; i<find[1];i++){
-    //       if (finalRes[33 - i] == find[33 - i + 2]){
+    //       if (res16[19 - i] == find[19 - i + 2]){
     //         continue;
     //       }
     //       valid = false;
     //     }
     //   }
-    //   if (valid){
-    //     result[0] = glob[global_invocation_index].workerId + 1000;
-    //     for (var i:u32 = 0; i< 34;i++){
-    //       result[i+1] = finalRes[i];
-    //     }
-    //   }
+      if (valid == true){
+        result[0] = glob[global_invocation_index].workerId + 1000;
+        // for (var i:u32 = 0; i< 40;i++){
+        //   result[i+1] = res16[i];
+        // }
+      }
     }
   
   

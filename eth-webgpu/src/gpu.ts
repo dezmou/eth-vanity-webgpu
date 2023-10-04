@@ -3,8 +3,8 @@ import { shader } from "./shader";
 
 declare const Base58: any;
 
-const NB_ITER = 1;
-const NB_THREAD = 1;
+const NB_ITER = 1024;
+const NB_THREAD = 128;
 
 function uint32ArrayToHexString(arr: number[]) {
     let hexStr = '';
@@ -113,28 +113,28 @@ export const gpu = async (
     const bindGroupLayout = (device).createBindGroupLayout({
         entries: [
             {
-                binding: 1,
+                binding: 0,
                 visibility: GPUShaderStage.COMPUTE,
                 buffer: {
                     type: "storage"
                 }
             },
             {
-                binding: 2,
+                binding: 1,
                 visibility: GPUShaderStage.COMPUTE,
                 buffer: {
                     type: "read-only-storage"
                 }
             },
             {
-                binding: 3,
+                binding: 2,
                 visibility: GPUShaderStage.COMPUTE,
                 buffer: {
                     type: "storage"
                 }
             },
             {
-                binding: 4,
+                binding: 3,
                 visibility: GPUShaderStage.COMPUTE,
                 buffer: {
                     type: "read-only-storage"
@@ -148,25 +148,25 @@ export const gpu = async (
         layout: bindGroupLayout,
         entries: [
             {
-                binding: 1,
+                binding: 0,
                 resource: {
                     buffer: resultxBuffer
                 }
             },
             {
-                binding: 2,
+                binding: 1,
                 resource: {
                     buffer: gpuPrivateKey
                 }
             },
             {
-                binding: 3,
+                binding: 2,
                 resource: {
                     buffer: tmpBuf
                 }
             },
             {
-                binding: 4,
+                binding: 3,
                 resource: {
                     buffer: gpuFind
                 }
@@ -189,11 +189,11 @@ export const gpu = async (
     (async () => {
         for (let i = 0; i < 10000000; i++) {
             const now = performance.now();
-            // for (let i = 0; i < 8; i++) {
-            //     // privateKey[i] = 0xaaaaaaaa;
-            //     privateKey[i] = 0x00000000;
-            // }
-            // // privateKey[1] = Math.floor(Math.random() * 0xffffffff);
+            for (let i = 0; i < 8; i++) {
+                privateKey[i] = Math.floor(Math.random() * 0xffffffff);
+                // privateKey[i] = 0x00000000;
+            }
+            // privateKey[1] = Math.floor(Math.random() * 0xffffffff);
             // privateKey[1] = i;
 
             device.queue.writeBuffer(gpuPrivateKey, 0, privateKey, 0, 8);
@@ -249,30 +249,30 @@ export const gpu = async (
 
             await gpuReadBuffer.mapAsync(GPUMapMode.READ);
             const arrayBuffer = gpuReadBuffer.getMappedRange();
-            let str = "";
-            for (let chien of new Uint32Array(arrayBuffer)) {
-                // str += `${chien.toString(16)}`
-                // str += `${chien}`
-                str += `${String.fromCharCode(chien)}`;
-            }
-            console.log(str);
-
-            // if (new Uint32Array(arrayBuffer)[0] !== 0 && new Uint32Array(arrayBuffer)[0] !== lastFoundIndex) {
-            //     console.log("FOUND at index worker :", new Uint32Array(arrayBuffer)[0]);
-            //     let str = ""
-            //     for (let i = 0; i < 34; i++) {
-            //         str += String.fromCharCode(new Uint32Array(arrayBuffer)[i + 1]);
-            //     }
-            //     const tmp2 = [...privateKey];
-            //     tmp2[0] += new Uint32Array(arrayBuffer)[0] - 1000;
-            //     const str2 = (uint32ArrayToHexString(Array.from(tmp2)));
-            //     lastFoundIndex = new Uint32Array(arrayBuffer)[0];
-            //     found({
-            //         public: str,
-            //         private: str2
-            //     })
-            //     // break;
+            // let str = "";
+            // for (let chien of new Uint32Array(arrayBuffer)) {
+            //     // str += `${chien.toString(16)}`
+            //     // str += `${chien}`
+            //     str += `${String.fromCharCode(chien)}`;
             // }
+            // console.log(str);
+
+            if (new Uint32Array(arrayBuffer)[0] !== 0 && new Uint32Array(arrayBuffer)[0] !== lastFoundIndex) {
+                console.log("FOUND at index worker :", new Uint32Array(arrayBuffer)[0]);
+                let str = ""
+                for (let i = 0; i < 40; i++) {
+                    str += String.fromCharCode(new Uint32Array(arrayBuffer)[i + 1]);
+                }
+                const tmp2 = [...privateKey];
+                tmp2[0] += new Uint32Array(arrayBuffer)[0] - 1000;
+                const str2 = (uint32ArrayToHexString(Array.from(tmp2)));
+                lastFoundIndex = new Uint32Array(arrayBuffer)[0];
+                found({
+                    public: str,
+                    private: str2
+                })
+                break;
+            }
             // stats({
             //     nbrAddressGenerated: i * NB_THREAD * NB_ITER,
             //     perSecond: Math.floor((1000 / (performance.now() - now)) * NB_THREAD * NB_ITER),
