@@ -1509,9 +1509,10 @@ export const shader = (nbr_thread: number) => {
       var valid : bool = true;
       for (var i:u32 = 0; i < find[0];i++){
         if (res16[i] == find[i + 2]){
-            continue;
+
+        } else {
+            valid = false;
         }
-        valid = false;
       }
     //   if (valid){
     //     for (var i:u32 = 0; i<find[1];i++){
@@ -1521,8 +1522,10 @@ export const shader = (nbr_thread: number) => {
     //       valid = false;
     //     }
     //   }
-      if (valid == true){
-        result[0] = glob[global_invocation_index].workerId + 1000;
+    var index : u32 = global_invocation_index;  
+    if (valid && true){
+        index -= global_invocation_index;
+        result[index] = glob[global_invocation_index].workerId + 1000;
         // for (var i:u32 = 0; i< 40;i++){
         //   result[i+1] = res16[i];
         // }
