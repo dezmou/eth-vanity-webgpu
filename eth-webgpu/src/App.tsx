@@ -6,14 +6,14 @@ function App() {
 
   useEffect(() => {
     ; (async () => {
-      const gp = await gpu("aa", "bbb", (e: any) => {
+      const gp = await gpu((e: any) => {
         console.log(e);
       }, (e: any) => {
         console.log("STAT", e);
       })
       await gp.init();
       console.log("READY");
-      gp.run()
+      gp.run("aa", "bbb")
 
     })()
   }, [])

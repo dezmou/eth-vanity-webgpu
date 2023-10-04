@@ -17,16 +17,6 @@ function uint32ArrayToHexString(arr: number[]) {
 
 export const gpu = async (
     /**
-     * The prefix that the address must match
-     * All address start with T
-     * An address can also be invalid depending of the second character
-     */
-    prefix: string,
-    /**
-     * The suffix 
-     */
-    suffix: string,
-    /**
      * Event called when an address is found
      */
     found: Function,
@@ -36,10 +26,6 @@ export const gpu = async (
     stats: Function
 ) => {
 
-    let find = prefix;
-    find += Array.from({ length: 40 - prefix.length - suffix.length }).map(() => "0").join("");
-    find += suffix;
-    console.log(find);
 
     const adapter = (await navigator.gpu.requestAdapter())!;
     const device = await adapter.requestDevice();
@@ -50,22 +36,11 @@ export const gpu = async (
         usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
     });
 
-    const buf32 = new Uint32Array({ length: 42 });
-    buf32[0] = prefix.length;
-    buf32[1] = suffix.length;
-    for (let i = 0; i < 40; i++) {
-        buf32[i + 2] = find.charCodeAt(i);
-    }
-
-    console.log(buf32.byteLength, buf32.length);
-
     const gpuFind = device.createBuffer({
         size: 168,
         usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
     });
 
-    console.log(buf32.byteLength);
-    device.queue.writeBuffer(gpuFind, 0, buf32, 0, 42);
 
     // const gpuFindBuf = gpuFind.getMappedRange();
     // new Uint32Array(gpuFindBuf).set(buf32);
@@ -189,15 +164,25 @@ export const gpu = async (
         await device.queue.onSubmittedWorkDone();
     }
 
-    const run = async () => {
-        let lastFoundIndex = 0;
+    const run = async (prefix : string, suffix : string) => {
+        let find = prefix;
+        find += Array.from({ length: 40 - prefix.length - suffix.length }).map(() => "0").join("");
+        find += suffix;
+        const buf32 = new Uint32Array({ length: 42 });
+        buf32[0] = prefix.length;
+        buf32[1] = suffix.length;
+        for (let i = 0; i < 40; i++) {
+            buf32[i + 2] = find.charCodeAt(i);
+        }
+        device.queue.writeBuffer(gpuFind, 0, buf32, 0, 42);
 
+
+        let lastFoundIndex = 0;
         for (let i = 0; i < 10000000; i++) {
             const now = performance.now();
             const privateKey = new Uint32Array(8);
             for (let i = 0; i < 8; i++) {
                 privateKey[i] = Math.floor(Math.random() * 0xffffffff);
-                // privateKey[i] = 0x00000000;
             }
 
             device.queue.writeBuffer(gpuPrivateKey, 0, privateKey, 0, 8);
