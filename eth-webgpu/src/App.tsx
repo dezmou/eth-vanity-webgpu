@@ -3,13 +3,42 @@ import './App.css'
 import { gpu } from './gpu'
 import { Button, TextField } from '@mui/material'
 
+function Item(p: { private: string, public: string }) {
+  return <>
+    <div style={{
+      display: "flex",
+      width: "100%",
+      justifyContent: "space-evenly",
+    }}>
+      <div style={{
+        width: "25rem",
+      }}>
+        {p.public}
+      </div>
+      <div style={{
+        width: "40rem",
+      }}>
+        {/* {p.private} */}
+        <Button variant="contained" color="warning" onClick={() => {
+
+        }}>
+          Click to Reveal private key
+        </Button>
+
+      </div>
+    </div>
+
+  </>
+}
+
 function App() {
   const gp = useRef<any>(null)
-  const [prefix, setPrefix] = useState<string>("aaaaaa")
+  const [prefix, setPrefix] = useState<string>("aaa")
   const [suffix, setSuffix] = useState<string>("")
   const [state, setState] = useState<"new" | "compiling" | "running" | "stopped">("new")
   const [total, setTotal] = useState<number>(0)
   const [perSecond, setPersecond] = useState<number>(0)
+  const [found, setFound] = useState<any[]>([]);
 
   const filterText = (text: string) => {
     text = text.toLowerCase();
@@ -27,7 +56,8 @@ function App() {
     ; (async () => {
       gp.current = await gpu({
         onFound: (e: any) => {
-          console.log(e);
+          setFound(a => [...a, e])
+          console.log("FOUNDAGE", e);
         }
         ,
         oninit: () => {
@@ -56,13 +86,18 @@ function App() {
         alignItems: 'center',
         alignContent: 'center',
         width: '100vw',
-        height: '100vh',
 
       }}>
+        <div style={{
+          height: "20vh",
+        }}>
+
+        </div>
         <div style={{
           display: 'flex',
           flexDirection: 'column',
           gap: '1rem',
+          width: "300px",
 
         }}>
           <TextField type='text' onInput={(e) => setPrefix(filterText((e.target as any).value))} value={prefix} label="Prefix" variant="outlined" />
@@ -137,6 +172,28 @@ function App() {
           </div>
         </div>
       </div>
+
+      <div style={{
+        display: "flex",
+        width: "100vw",
+        justifyContent: "center",
+      }}>
+        <div style={{
+          width: "95vw",
+          border : "1px solid #ccc",
+        }}>
+          {found.map((e, i) => <div style={{
+            fontSize: "0.9rem",
+            width: "100%",
+            paddingTop: "0.1rem",
+            paddingBottom: "0.1rem",
+            background: i % 2 === 0 ? "#eee" : "#fff",
+          }} key={i}>
+            <Item private={e.private} public={e.public} />
+          </div>)}
+        </div>
+      </div>
+
     </>
   )
 }
