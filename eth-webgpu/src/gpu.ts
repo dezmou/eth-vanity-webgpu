@@ -3,8 +3,8 @@ import { shader } from "./shader";
 
 declare const Base58: any;
 
-const NB_ITER = 1024;
-const NB_THREAD = 128;
+const NB_ITER = 512;
+const NB_THREAD = 64;
 
 function uint32ArrayToHexString(arr: number[]) {
     let hexStr = '';
@@ -35,13 +35,13 @@ export const gpu = async (
      */
     stats: Function
 ) => {
+
     let find = prefix;
     find += Array.from({ length: 40 - prefix.length - suffix.length }).map(() => "0").join("");
     find += suffix;
     console.log(find);
 
-    const adapter = await navigator.gpu.requestAdapter();
-    if (!adapter) { return false; }
+    const adapter = (await navigator.gpu.requestAdapter())!;
     const device = await adapter.requestDevice();
     console.log(device.limits);
 
@@ -76,13 +76,16 @@ export const gpu = async (
     }
 
     const gpuFind = device.createBuffer({
-        mappedAtCreation: true,
         size: buf32.byteLength,
-        usage: GPUBufferUsage.STORAGE,
+        usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
     });
-    const gpuFindBuf = gpuFind.getMappedRange();
-    new Uint32Array(gpuFindBuf).set(buf32);
-    gpuFind.unmap();
+
+    console.log(buf32.byteLength);
+    device.queue.writeBuffer(gpuFind, 0, buf32, 0, buf32.length);
+
+    // const gpuFindBuf = gpuFind.getMappedRange();
+    // new Uint32Array(gpuFindBuf).set(buf32);
+    // gpuFind.unmap();
 
     const resultxBufferSize = Uint32Array.BYTES_PER_ELEMENT * 256;
     const resultxBuffer = device.createBuffer({
@@ -183,17 +186,35 @@ export const gpu = async (
         bindGroupLayouts: [bindGroupLayout]
     });
 
+    const init = async () => {
+        const computeInitPip = device.createComputePipeline({
+            layout,
+            compute: {
+                module: shaderModule,
+                entryPoint: "init"
+            }
+        });
+        const commandEncoder = device.createCommandEncoder();
+        const passEncoder = commandEncoder.beginComputePass();
+        passEncoder.setPipeline(computeInitPip);
+        passEncoder.setBindGroup(0, bindGroup);
+        passEncoder.dispatchWorkgroups(NB_ITER, 1);
+        passEncoder.end();
 
-    let lastFoundIndex = 0;
+        device.queue.submit([commandEncoder.finish()]);
+        await device.queue.onSubmittedWorkDone();
+    }
 
-    (async () => {
+    const run = async () => {
+        let lastFoundIndex = 0;
+
         for (let i = 0; i < 10000000; i++) {
             const now = performance.now();
             for (let i = 0; i < 8; i++) {
                 privateKey[i] = Math.floor(Math.random() * 0xffffffff);
                 // privateKey[i] = 0x00000000;
             }
- 
+
             device.queue.writeBuffer(gpuPrivateKey, 0, privateKey, 0, 8);
 
             const commands = ["init", "step1", "step2", "step3", "step4"].map(e => {
@@ -274,10 +295,10 @@ export const gpu = async (
             // }
             // break;
         }
-    })()
-    return true;
-    // await gpuPrivateKey.mapAsync(GPUMapMode.WRITE);
-    // const privateKeyBuf2 = gpuPrivateKey.getMappedRange();
-    // new Uint32Array(privateKeyBuf2).set(privateKey);
-    // gpuPrivateKey.unmap();
+    }
+
+    return {
+        init,
+        run
+    }
 }

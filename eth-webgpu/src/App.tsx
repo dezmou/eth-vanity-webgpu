@@ -5,11 +5,17 @@ import { gpu } from './gpu'
 function App() {
 
   useEffect(() => {
-    gpu("aa", "bbb", (e: any) => {
-      console.log(e);
-    }, (e:any) => {
-      console.log("STAT", e);
-    })
+    ; (async () => {
+      const gp = await gpu("aa", "bbb", (e: any) => {
+        console.log(e);
+      }, (e: any) => {
+        console.log("STAT", e);
+      })
+      await gp.init();
+      console.log("READY");
+      gp.run()
+
+    })()
   }, [])
 
   return (

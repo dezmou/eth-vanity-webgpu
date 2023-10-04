@@ -1329,7 +1329,7 @@ export const shader = (nbr_thread: number) => {
         let global_invocation_index =
         workgroup_index * ${nbr_thread} +
         local_invocation_index;  
-        
+
         var x1 : array<u32, 8>;
           var y1 : array<u32, 8>;
           var naf : array<u32, 33>;for (var i = 0u; i < 33; i = i + 1u) {naf[i] = 0;}
@@ -1459,7 +1459,6 @@ export const shader = (nbr_thread: number) => {
           }
           keccak_f_1600(&state);
       }
-  
       for (var z:u32 = 0; z< 5; z++) {
         for (var y:u32 = 0; y< 5; y++) {
   
@@ -1514,6 +1513,7 @@ export const shader = (nbr_thread: number) => {
             valid = false;
         }
       }
+      
       if (valid){
         for (var i:u32 = 0; i<find[1];i++){
           if (res16[39 - i] == find[39 - i + 2]){
@@ -1522,6 +1522,7 @@ export const shader = (nbr_thread: number) => {
           valid = false;
         }
       }
+
     if (valid){
         atomicStore(&result[0], glob[global_invocation_index].workerId + 1000);
         for (var i:u32 = 0; i< 40;i++){
