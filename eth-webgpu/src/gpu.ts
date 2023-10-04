@@ -189,10 +189,10 @@ export const gpu = async (
     (async () => {
         for (let i = 0; i < 10000000; i++) {
             const now = performance.now();
-            for (let i = 0; i < 8; i++) {
-                privateKey[i] = Math.floor(Math.random() * 0xffffffff);
-                // privateKey[i] = 0x00000000;
-            }
+            // for (let i = 0; i < 8; i++) {
+            //     privateKey[i] = Math.floor(Math.random() * 0xffffffff);
+            //     // privateKey[i] = 0x00000000;
+            // }
             // privateKey[1] = Math.floor(Math.random() * 0xffffffff);
             // privateKey[1] = i;
 

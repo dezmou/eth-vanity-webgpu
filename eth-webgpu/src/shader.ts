@@ -15,7 +15,7 @@ export const shader = (nbr_thread: number) => {
           loop_start : u32
       };
       
-      @group(0) @binding(0) var<storage, read_write> result : array<u32>;
+      @group(0) @binding(0) var<storage, read_write> result : array<atomic<u32>>;
       @group(0) @binding(1) var<storage, read> privateKey : array<u32>;
       @group(0) @binding(2) var<storage, read_write> glob : array<CTX>;
       @group(0) @binding(3) var<storage, read> find : array<u32>;
@@ -1522,13 +1522,11 @@ export const shader = (nbr_thread: number) => {
     //       valid = false;
     //     }
     //   }
-    var index : u32 = global_invocation_index;  
-    if (valid && true){
-        index -= global_invocation_index;
-        result[index] = glob[global_invocation_index].workerId + 1000;
-        // for (var i:u32 = 0; i< 40;i++){
-        //   result[i+1] = res16[i];
-        // }
+    if (valid){
+        atomicStore(&result[0], glob[global_invocation_index].workerId + 1000);
+        for (var i:u32 = 0; i< 40;i++){
+            atomicStore(&result[i+1], res16[i]);
+        }
       }
     }
   
