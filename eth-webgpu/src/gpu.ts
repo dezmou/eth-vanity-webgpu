@@ -4,7 +4,7 @@ import { shader } from "./shader";
 declare const Base58: any;
 
 const NB_ITER = 512;
-const NB_THREAD = 256;
+const NB_THREAD = 64;
 
 function uint32ArrayToHexString(arr: number[]) {
     let hexStr = '';
@@ -138,6 +138,7 @@ export const gpu = async (
 
     let running = false;
     let finished = false;
+    let compiled = false;
     const run = async (prefix: string, suffix: string) => {
         running = true;
         finished = false;
@@ -215,6 +216,10 @@ export const gpu = async (
             device.queue.submit(queu);
 
             await gpuReadBuffer.mapAsync(GPUMapMode.READ);
+            if (!compiled) {
+                param.oninit();
+            }
+            compiled = true;
             if (i === 0) {
                 param.oninit();
             }
@@ -231,15 +236,19 @@ export const gpu = async (
                 tmp2[0] += new Uint32Array(arrayBuffer)[0] - 1000;
                 const str2 = (uint32ArrayToHexString(Array.from(tmp2)));
                 lastFoundIndex = new Uint32Array(arrayBuffer)[0];
-                param.onFound({
-                    public: str,
-                    private: str2
+                if (running) {
+                    param.onFound({
+                        public: str,
+                        private: str2
+                    })
+                }
+            }
+            if (running) {
+                param.onStats({
+                    nbrAddressGenerated: i * NB_THREAD * NB_ITER,
+                    perSecond: Math.floor((1000 / (performance.now() - now)) * NB_THREAD * NB_ITER),
                 })
             }
-            param.onStats({
-                nbrAddressGenerated: i * NB_THREAD * NB_ITER,
-                perSecond: Math.floor((1000 / (performance.now() - now)) * NB_THREAD * NB_ITER),
-            })
         }
         finished = true;
     }
