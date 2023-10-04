@@ -1,10 +1,24 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './App.css'
 import { gpu } from './gpu'
 import { Button, TextField } from '@mui/material'
 
 function App() {
   const gp = useRef<any>(null)
+  const [prefix, setPrefix] = useState<string>("")
+  const [suffix, setSuffix] = useState<string>("")
+
+  const filterText = (text: string) => {
+    text = text.toLowerCase();
+    let final = ""
+    const allowed = "0123456789abcdef".split("")
+    for (let char of text.split("")) {
+      if (allowed.includes(char)) {
+        final += char
+      }
+    }
+    return final;
+  }
 
   useEffect(() => {
     ; (async () => {
@@ -44,8 +58,8 @@ function App() {
           flexDirection: 'column',
           gap: '1rem',
         }}>
-          <TextField label="Prefix" variant="outlined" />
-          <TextField label="Suffix" variant="outlined" />
+          <TextField type='text' onInput={(e) => setPrefix(filterText((e.target as any).value))} value={prefix} label="Prefix" variant="outlined" />
+          <TextField type="text" onInput={(e) => setSuffix(filterText((e.target as any).value))} value={suffix} label="Suffix" variant="outlined" />
           <Button variant="contained" color="primary" onClick={() => { }}>
             Start
           </Button>
