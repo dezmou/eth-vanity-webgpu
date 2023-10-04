@@ -22,8 +22,6 @@ export const gpu = async (
         onStats: Function
     }
 ) => {
-
-
     const adapter = (await navigator.gpu.requestAdapter())!;
     const device = await adapter.requestDevice();
     console.log(device.limits);
