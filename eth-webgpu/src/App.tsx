@@ -4,26 +4,39 @@ import { gpu } from './gpu'
 import { Button, TextField } from '@mui/material'
 
 function Item(p: { private: string, public: string }) {
+  const [show, setShow] = useState<boolean>(false)
+
   return <>
     <div style={{
       display: "flex",
       width: "100%",
       justifyContent: "space-evenly",
+      height : "2.5rem",
     }}>
       <div style={{
         width: "25rem",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
       }}>
         {p.public}
       </div>
       <div style={{
         width: "40rem",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
       }}>
-        {/* {p.private} */}
-        <Button variant="contained" color="warning" onClick={() => {
-
-        }}>
-          Click to Reveal private key
-        </Button>
+        {show && <>
+          {p.private}
+        </>}
+        {!show && <>
+          <Button variant="contained" color="warning" onClick={() => {
+            setShow(true)
+          }}>
+            Click to Reveal private key
+          </Button>
+        </>}
 
       </div>
     </div>
@@ -180,7 +193,7 @@ function App() {
       }}>
         <div style={{
           width: "95vw",
-          border : "1px solid #ccc",
+          border: "1px solid #ccc",
         }}>
           {found.map((e, i) => <div style={{
             fontSize: "0.9rem",
