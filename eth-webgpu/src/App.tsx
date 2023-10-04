@@ -6,15 +6,21 @@ function App() {
 
   useEffect(() => {
     ; (async () => {
-      const gp = await gpu((e: any) => {
-        console.log(e);
-      }, (e: any) => {
-        console.log("STAT", e);
+      const gp = await gpu({
+        onFound: () => { }
+        ,
+        oninit: () => {
+          console.log("READY");
+        },
+        onStats: (e:any) => {
+          console.log(e);
+        }
       })
-      await gp.init();
-      console.log("READY");
-      gp.run("aa", "bbb")
-
+      gp.run("aaaaaa", "bbb")
+      setTimeout(async () => {
+        await gp.stop()
+        gp.run("aa", "bbb")
+      }, 5000)
     })()
   }, [])
 

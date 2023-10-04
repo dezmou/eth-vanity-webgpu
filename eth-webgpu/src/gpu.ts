@@ -4,7 +4,7 @@ import { shader } from "./shader";
 declare const Base58: any;
 
 const NB_ITER = 512;
-const NB_THREAD = 64;
+const NB_THREAD = 256;
 
 function uint32ArrayToHexString(arr: number[]) {
     let hexStr = '';
@@ -16,14 +16,11 @@ function uint32ArrayToHexString(arr: number[]) {
 
 
 export const gpu = async (
-    /**
-     * Event called when an address is found
-     */
-    found: Function,
-    /**
-     * Event called to tell stats
-     */
-    stats: Function
+    param: {
+        oninit: Function,
+        onFound: Function,
+        onStats: Function
+    }
 ) => {
 
 
@@ -40,11 +37,6 @@ export const gpu = async (
         size: 168,
         usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
     });
-
-
-    // const gpuFindBuf = gpuFind.getMappedRange();
-    // new Uint32Array(gpuFindBuf).set(buf32);
-    // gpuFind.unmap();
 
     const resultxBufferSize = Uint32Array.BYTES_PER_ELEMENT * 256;
     const resultxBuffer = device.createBuffer({
@@ -145,26 +137,12 @@ export const gpu = async (
         bindGroupLayouts: [bindGroupLayout]
     });
 
-    const init = async () => {
-        const computeInitPip = device.createComputePipeline({
-            layout,
-            compute: {
-                module: shaderModule,
-                entryPoint: "init"
-            }
-        });
-        const commandEncoder = device.createCommandEncoder();
-        const passEncoder = commandEncoder.beginComputePass();
-        passEncoder.setPipeline(computeInitPip);
-        passEncoder.setBindGroup(0, bindGroup);
-        passEncoder.dispatchWorkgroups(NB_ITER, 1);
-        passEncoder.end();
 
-        device.queue.submit([commandEncoder.finish()]);
-        await device.queue.onSubmittedWorkDone();
-    }
-
-    const run = async (prefix : string, suffix : string) => {
+    let running = false;
+    let finished = false;
+    const run = async (prefix: string, suffix: string) => {
+        running = true;
+        finished = false;
         let find = prefix;
         find += Array.from({ length: 40 - prefix.length - suffix.length }).map(() => "0").join("");
         find += suffix;
@@ -178,7 +156,9 @@ export const gpu = async (
 
 
         let lastFoundIndex = 0;
-        for (let i = 0; i < 10000000; i++) {
+        let i = -1;
+        while (running) {
+            i += 1;
             const now = performance.now();
             const privateKey = new Uint32Array(8);
             for (let i = 0; i < 8; i++) {
@@ -204,6 +184,7 @@ export const gpu = async (
                 return commandEncoder.finish();
             })
 
+
             const init = commands[0];
             const step1 = commands[1];
             const step2 = commands[2];
@@ -225,7 +206,7 @@ export const gpu = async (
             const queu = []
 
             queu.push(init)
-            for (let i = 0; i < 256; i++) { // caution loop_start
+            for (let i = 0; i < 256; i++) {
                 queu.push(step1)
                 queu.push(step2)
             }
@@ -233,10 +214,13 @@ export const gpu = async (
             queu.push(step4)
             queu.push(stepRes)
 
-
             device.queue.submit(queu);
 
             await gpuReadBuffer.mapAsync(GPUMapMode.READ);
+            if (i === 0) {
+                param.oninit();
+            }
+
             const arrayBuffer = gpuReadBuffer.getMappedRange();
 
             if (new Uint32Array(arrayBuffer)[0] !== 0 && new Uint32Array(arrayBuffer)[0] !== lastFoundIndex) {
@@ -249,26 +233,28 @@ export const gpu = async (
                 tmp2[0] += new Uint32Array(arrayBuffer)[0] - 1000;
                 const str2 = (uint32ArrayToHexString(Array.from(tmp2)));
                 lastFoundIndex = new Uint32Array(arrayBuffer)[0];
-                found({
+                param.onFound({
                     public: str,
                     private: str2
                 })
-                break;
             }
-            stats({
+            param.onStats({
                 nbrAddressGenerated: i * NB_THREAD * NB_ITER,
                 perSecond: Math.floor((1000 / (performance.now() - now)) * NB_THREAD * NB_ITER),
             })
-            // if (i % 5 == 0) {
-            //     const nbrDone = i * NB_THREAD * NB_ITER;
-            //     console.log(`Number of key generated : ${nbrDone}  |  ${Math.floor((1000 / (performance.now() - now)) * NB_THREAD * NB_ITER)} per second`);
-            // }
-            // break;
+        }
+        finished = true;
+    }
+
+    const stop = async () => {
+        running = false;
+        while (!finished) {
+            await new Promise(r => setTimeout(r, 100));
         }
     }
 
     return {
-        init,
-        run
+        run,
+        stop,
     }
 }
