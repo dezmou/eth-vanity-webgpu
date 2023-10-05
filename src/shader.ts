@@ -570,18 +570,18 @@ export const shader = (nbr_thread: number) => {
       
            for (var i : u32 = 8u; i < 15u; i++)
            {
-               for (var j : u32 = i - 7; j < 8u; j++)
+               for (var j : u32 = i - 7u; j < 8u; j++)
                {
                    var a_j: u32 = (*a)[j];
                    var b_ij: u32 = (*b)[i - j];
          
                    // Multiply (*a)[j] and (*b)[i - j]
                    var low_part: u32 = (a_j & 0xFFFFu) * (b_ij & 0xFFFFu);
-                   var high_part: u32 = (a_j >> 16) * (b_ij >> 16);
+                   var high_part: u32 = (a_j >> 16u) * (b_ij >> 16u);
          
                    // Middle part contributions
-                   var middle1: u32 = (a_j & 0xFFFFu) * (b_ij >> 16);
-                   var middle2: u32 = (a_j >> 16) * (b_ij & 0xFFFFu);
+                   var middle1: u32 = (a_j & 0xFFFFu) * (b_ij >> 16u);
+                   var middle2: u32 = (a_j >> 16u) * (b_ij & 0xFFFFu);
          
                    // Combine all contributions
                    var sum_low: u32 = t0 + low_part;
@@ -600,26 +600,26 @@ export const shader = (nbr_thread: number) => {
                    }
          
                    // Add middle contributions, taking care of carry
-                   var sum_middle: u32 = sum_low + (middle1 << 16);
+                   var sum_middle: u32 = sum_low + (middle1 << 16u);
                    if ((sum_middle < sum_low)) {
                       carry_in = 1u;
                    }else {
                       carry_in = 0u;
                    }
                    sum_low = sum_middle;
-                   sum_middle = sum_high + (middle1 >> 16) + carry_in;
-                   if ((sum_middle < sum_high)) {carry_out += 1;}
+                   sum_middle = sum_high + (middle1 >> 16u) + carry_in;
+                   if ((sum_middle < sum_high)) {carry_out += 1u;}
                    sum_high = sum_middle;
          
-                   sum_middle = sum_low + (middle2 << 16);
+                   sum_middle = sum_low + (middle2 << 16u);
                    if ((sum_middle < sum_low)) {
                       carry_in = 1u;
                    }else {
                       carry_in = 0u;
                    }
                    sum_low = sum_middle;
-                   sum_middle = sum_high + (middle2 >> 16) + carry_in;
-                   if ((sum_middle < sum_high)) {carry_out += 1;};
+                   sum_middle = sum_high + (middle2 >> 16u) + carry_in;
+                   if ((sum_middle < sum_high)) {carry_out += 1u;};
                    sum_high = sum_middle;
          
                    // Set t0, t1 and carry
@@ -647,18 +647,18 @@ export const shader = (nbr_thread: number) => {
       
           var constant :u32  = 0x03d1u;
       
-          for (var i: u32 = 0u; i < 8; i++)
+          for (var i: u32 = 0u; i < 8u; i++)
           {
               var j: u32 = 8u + i;
               var t_j: u32 = t[j];
       
               // Multiply constant and t[j]
-              var low_part: u32 = (constant & 0xFFFF) * (t_j & 0xFFFF);
-              var high_part: u32 = (constant >> 16) * (t_j >> 16);
+              var low_part: u32 = (constant & 0xFFFFu) * (t_j & 0xFFFFu);
+              var high_part: u32 = (constant >> 16u) * (t_j >> 16u);
       
               // Middle part contributions
-              var middle1: u32 = (constant & 0xFFFF) * (t_j >> 16);
-              var middle2: u32 = (constant >> 16) * (t_j & 0xFFFF);
+              var middle1: u32 = (constant & 0xFFFFu) * (t_j >> 16u);
+              var middle2: u32 = (constant >> 16u) * (t_j & 0xFFFFu);
       
               // Combine all contributions
               var sum_low: u32 = low_part + c;
@@ -677,27 +677,27 @@ export const shader = (nbr_thread: number) => {
               }
       
               // Add middle contributions, taking care of carry
-              var sum_middle: u32 = sum_low + (middle1 << 16);
+              var sum_middle: u32 = sum_low + (middle1 << 16u);
               if ((sum_middle < sum_low)){
                   carry_in = 1u;
               }else {
                   carry_in = 0u;
               }
               sum_low = sum_middle;
-              sum_middle = sum_high + (middle1 >> 16) + carry_in;
+              sum_middle = sum_high + (middle1 >> 16u) + carry_in;
               if ((sum_middle < sum_high)){
                   carry_out += 1u;
               }
               sum_high = sum_middle;
       
-              sum_middle = sum_low + (middle2 << 16);
+              sum_middle = sum_low + (middle2 << 16u);
               if ((sum_middle < sum_low)){
                   carry_in = 1u;
               }else {
                   carry_in = 0u;
               }
               sum_low = sum_middle;
-              sum_middle = sum_high + (middle2 >> 16) + carry_in;
+              sum_middle = sum_high + (middle2 >> 16u) + carry_in;
               if ((sum_middle < sum_high)){
                   carry_out += 1;
               }
