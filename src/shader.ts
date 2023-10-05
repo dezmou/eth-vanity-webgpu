@@ -111,7 +111,7 @@ export const shader = (nbr_thread: number) => {
         t0[6] = (t0[6] >> 1) | (t0[7] << 31);
         t0[7] = t0[7] >> 1;
   
-        var  c : u32 = 0;
+        var  c : u32 = 0u;
   
         if ((t2[0] & 1) != 0) {
           for (var i = 0u; i < 8; i = i + 1u) {r_tmp[i] = t2[i];}
@@ -138,7 +138,7 @@ export const shader = (nbr_thread: number) => {
         t1[6] = (t1[6] >> 1) | (t1[7] << 31);
         t1[7] = t1[7] >> 1;
   
-        var  c : u32 = 0;
+        var  c : u32 = 0u;
   
         if ((t3[0] & 1) != 0){
           for (var i = 0u; i < 8; i = i + 1u) {r_tmp[i] = t3[i];}
@@ -156,7 +156,7 @@ export const shader = (nbr_thread: number) => {
       }
       else
       {
-        var  gt : u32 = 0;
+        var  gt : u32 = 0u;
   
         for (var i : i32 = 7; i >= 0; i--)
         {
@@ -184,7 +184,7 @@ export const shader = (nbr_thread: number) => {
           t0[6] = (t0[6] >> 1) | (t0[7] << 31);
           t0[7] = t0[7] >> 1;
   
-          var  lt : u32 = 0;
+          var  lt : u32 = 0u;
   
           for (var i : i32 = 7; i >= 0; i--)
           {
@@ -206,7 +206,7 @@ export const shader = (nbr_thread: number) => {
           for (var i = 0u; i < 8; i = i + 1u) {r_tmp[i] = t2[i];}
           sub(&t2, &r_tmp, &t3);
   
-          var  c : u32 = 0;
+          var  c : u32 = 0u;
   
           if ((t2[0] & 1) != 0){
               for (var i = 0u; i < 8; i = i + 1u) {r_tmp[i] = t2[i];}
@@ -236,7 +236,7 @@ export const shader = (nbr_thread: number) => {
           t1[6] = (t1[6] >> 1) | (t1[7] << 31);
           t1[7] = t1[7] >> 1;
   
-          var  lt : u32 = 0;
+          var  lt : u32 = 0u;
   
           for (var i : i32 = 7; i >= 0; i--)
           {
@@ -258,7 +258,7 @@ export const shader = (nbr_thread: number) => {
           for (var i = 0u; i < 8; i = i + 1u) {r_tmp[i] = t3[i];}
           sub(&t3, &r_tmp, &t2);
   
-          var  c : u32 = 0;
+          var  c : u32 = 0u;
   
           if ((t3[0] & 1) != 0) {
               for (var i = 0u; i < 8; i = i + 1u) {r_tmp[i] = t3[i];}
@@ -310,9 +310,9 @@ export const shader = (nbr_thread: number) => {
           ) -> u32
       {
       
-        var c:u32 = 0; // carry/borrow
+        var c:u32 = 0u; // carry/borrow
       
-        for (var i:u32 = 0; i < 8; i++)
+        for (var i:u32 = 0u; i < 8; i++)
         {
           var t:u32 = (*a)[aSlice + i] + (*b)[bSlice + i] + c;
       
@@ -333,9 +333,9 @@ export const shader = (nbr_thread: number) => {
       fn add_8_8_16( r : ptr<function, array<u32, 8>>,  a : ptr<function, array<u32, 8>>,  b : ptr<function, array<u32, 16>>) -> u32
       {
       
-        var c:u32 = 0; // carry/borrow
+        var c:u32 = 0u; // carry/borrow
       
-        for (var i:u32 = 0; i < 8; i++)
+        for (var i:u32 = 0u; i < 8; i++)
         {
           var t:u32 = (*a)[i] + (*b)[i] + c;
       
@@ -357,9 +357,9 @@ export const shader = (nbr_thread: number) => {
       fn add_8_16_16( r : ptr<function, array<u32, 8>>,  a : ptr<function, array<u32, 16>>,  b : ptr<function, array<u32, 16>>) -> u32
       {
       
-        var c:u32 = 0; // carry/borrow
+        var c:u32 = 0u; // carry/borrow
       
-        for (var i:u32 = 0; i < 8; i++)
+        for (var i:u32 = 0u; i < 8; i++)
         {
           var t:u32 = (*a)[i] + (*b)[i] + c;
       
@@ -379,9 +379,9 @@ export const shader = (nbr_thread: number) => {
       
       fn sub_8_8_16(r : ptr<function, array<u32, 8>>,  a : ptr<function, array<u32, 8>>,  b : ptr<function, array<u32, 16>>) -> u32 
       {
-        var c : u32 = 0; // carry/borrow
+        var c : u32 = 0u; // carry/borrow
       
-        for (var i : u32 = 0; i < 8; i++)
+        for (var i : u32 = 0u; i < 8; i++)
         {
           var diff : u32 = (*a)[i] - (*b)[i] - c;
       
@@ -402,9 +402,9 @@ export const shader = (nbr_thread: number) => {
       fn add( r : ptr<function, array<u32, 8>>,  a : ptr<function, array<u32, 8>>,  b : ptr<function, array<u32, 8>>) -> u32
       {
       
-        var c:u32 = 0; // carry/borrow
+        var c:u32 = 0u; // carry/borrow
       
-        for (var i:u32 = 0; i < 8; i++)
+        for (var i:u32 = 0u; i < 8; i++)
         {
           var t:u32 = (*a)[i] + (*b)[i] + c;
       
@@ -448,9 +448,9 @@ export const shader = (nbr_thread: number) => {
       fn sub( r : ptr<function, array<u32, 8>>,a :ptr<function, array<u32, 8>>, b :  ptr<function, array<u32, 8>>) -> u32
       {
       
-        var c: u32 = 0; // carry/borrow
+        var c: u32 = 0u; // carry/borrow
       
-        for (var i: u32 = 0; i < 8; i++)
+        for (var i: u32 = 0u; i < 8; i++)
         {
           var diff: u32 = (*a)[i] - (*b)[i] - c;
       
@@ -510,15 +510,15 @@ export const shader = (nbr_thread: number) => {
       fn mul_mod( r : ptr<function, array<u32, 8>>,a :ptr<function, array<u32, 8>>, b :  ptr<function, array<u32, 8>>,  debug : u32) {
           var t : array<u32, 16>;
       
-           var t0 : u32 = 0;
-           var t1 : u32 = 0;
+           var t0 : u32 = 0u;
+           var t1 : u32 = 0u;
            var c : u32  = 0;
         
       
       
-           for (var  i : u32 = 0; i < 8; i++)
+           for (var  i : u32 = 0u; i < 8; i++)
            {
-               for (var j : u32 = 0; j <= i; j++)
+               for (var j : u32 = 0u; j <= i; j++)
                {
                    var a_j : u32 = (*a)[j];
                    var b_ij : u32 = (*b)[i - j];
@@ -647,7 +647,7 @@ export const shader = (nbr_thread: number) => {
       
           var constant :u32  = 0x03d1;
       
-          for (var i: u32 = 0; i < 8; i++)
+          for (var i: u32 = 0u; i < 8; i++)
           {
               var j: u32 = 8 + i;
               var t_j: u32 = t[j];
@@ -1058,7 +1058,7 @@ export const shader = (nbr_thread: number) => {
           for (var i = 0u; i < 8; i = i + 1u) {tmp_usr[i] = t4[i];}
           add_mod(&t4, &tmp_usr, &t2); // t4 = 3 * t4 = 3 * x^2
       
-          var c:u32 = 0;
+          var c:u32 = 0u;
       
           if ((t4[0] & 1) != 0)
           {
@@ -1151,7 +1151,7 @@ export const shader = (nbr_thread: number) => {
         n[8] = privateKey[0] + global_invocation_id;
         // n[8] = privateKey[0];
       
-        for (var i:u32 = 0; i <= 256; i++)
+        for (var i:u32 = 0u; i <= 256; i++)
         {
           if ((n[8] & 1) != 0)
           {
@@ -1250,18 +1250,18 @@ export const shader = (nbr_thread: number) => {
       fn keccak_f_1600(a : ptr<function, array<array<array<u32,2>,5>, 5>>){
         var nRounds : u32 = 24; 
         
-        for (var r : u32 = 0; r < nRounds; r++) {
+        for (var r : u32 = 0u; r < nRounds; r++) {
           
           var C : array<array<u32, 2>,5> ;
           var D : array<array<u32, 2>,5> ;
           
-          for (var x : u32 = 0; x < 5; x++) {
-              for (var y : u32 = 0; y < 5; y++) {
+          for (var x : u32 = 0u; x < 5; x++) {
+              for (var y : u32 = 0u; y < 5; y++) {
                   C[x][0] = (C[x][0] ^ (*a)[x][y][0]) >> 0;
                   C[x][1] = (C[x][1] ^ (*a)[x][y][1]) >> 0;
               }
           }
-          for (var x : u32 = 0; x < 5; x++) {
+          for (var x : u32 = 0u; x < 5; x++) {
               var tmp : array<u32,2>;
               var tmp2 : array<u32,2>;
               tmp2[0] = C[(x + 1) % 5][0];
@@ -1270,18 +1270,18 @@ export const shader = (nbr_thread: number) => {
               D[x][0] = (C[(x + 4) % 5][0] ^ tmp[0]) >> 0;
               D[x][1] = (C[(x + 4) % 5][1] ^ tmp[1]) >> 0;
           }
-          for (var x : u32 = 0; x < 5; x++) {
-              for (var y : u32 = 0; y < 5; y++) {
+          for (var x : u32 = 0u; x < 5; x++) {
+              for (var y : u32 = 0u; y < 5; y++) {
                   (*a)[x][y][0] = ((*a)[x][y][0] ^ D[x][0]) >> 0;
                   (*a)[x][y][1] = ((*a)[x][y][1] ^ D[x][1]) >> 0;
               }
           }
           var x : u32 = 1;
-          var y : u32 = 0;
+          var y : u32 = 0u;
           var current : array<u32,2>; 
           current[0] = (*a)[x][y][0];
           current[1] = (*a)[x][y][1];
-          for (var t : u32 = 0; t < 24; t++) {
+          for (var t : u32 = 0u; t < 24; t++) {
               var X : u32 = y;
               var Y : u32 = (2 * x + 3 * y) % 5;
               var tmp : array<u32,2>;
@@ -1298,13 +1298,13 @@ export const shader = (nbr_thread: number) => {
               x = X;
               y = Y;
           }
-          for (var y : u32 = 0; y < 5; y++) {
+          for (var y : u32 = 0u; y < 5; y++) {
               var C : array<array<u32, 2>,5>;  // take a copy of the plane
-              for (var x : u32 = 0; x < 5; x++) {
+              for (var x : u32 = 0u; x < 5; x++) {
                   C[x][0] = ((*a)[x][y][0] ^ ((~(*a)[(x + 1) % 5][y][0]) & (*a)[(x + 2) % 5][y][0])) >> 0;
                   C[x][1] = ((*a)[x][y][1] ^ ((~(*a)[(x + 1) % 5][y][1]) & (*a)[(x + 2) % 5][y][1])) >> 0;
               }
-              for (var x : u32 = 0; x < 5; x++) {
+              for (var x : u32 = 0u; x < 5; x++) {
                   (*a)[x][y][0] = C[x][0];
                   (*a)[x][y][1] = C[x][1];
               }
@@ -1404,7 +1404,7 @@ export const shader = (nbr_thread: number) => {
         local_invocation_index;
   
       
-        var in : array<u32, 64 + 72>;
+        var in : array<u32,136>;
         for (var i = 0u; i < 64; i = i + 1u) {
           in[i] = glob[global_invocation_index].ecdsa[i];
         }
@@ -1412,7 +1412,7 @@ export const shader = (nbr_thread: number) => {
           in[64 + i] = 0;
         }
         in[64] = 0x01;
-        in[64+72-1] = 0x80;
+        in[135] = 0x80;
   
         // for (var i:u32=0; i< 64+72;i++){
         //   result[i] = in[i];
@@ -1423,8 +1423,8 @@ export const shader = (nbr_thread: number) => {
   
       var state : array<array<array<u32,2>,5>, 5>; // should it be init ?
   
-      for (var i : u32 = 0; i < (64 + 72); i += blocksize) {
-          for (var j : u32 = 0; j < 1088 / w; j++) {
+      for (var i : u32 = 0u; i < (64 + 72); i += blocksize) {
+          for (var j : u32 = 0u; j < 1088 / w; j++) {
               var lo : u32 = (in[i + j * 8 + 0] << 0) + (in[i + j * 8 + 1] << 8)
                   + (in[i + j * 8 + 2] << 16) + (in[i + j * 8 + 3] << 24);
               var hi : u32 = (in[i + j * 8 + 4] << 0) + (in[i + j * 8 + 5] << 8)
@@ -1434,9 +1434,9 @@ export const shader = (nbr_thread: number) => {
               var w : array<u32,2> ;
               
               // toInterleaved(w, lo, hi);
-              var even: u32 = 0;
-              var odd: u32 = 0;
-              for (var i: u32 = 0; i < 64; i++) {
+              var even: u32 = 0u;
+              var odd: u32 = 0u;
+              for (var i: u32 = 0u; i < 64; i++) {
                   var bit: u32 ;
                   if (i < 32) {
                     bit = (lo >> i) & 1;
@@ -1459,12 +1459,12 @@ export const shader = (nbr_thread: number) => {
           }
           keccak_f_1600(&state);
       }
-      for (var z:u32 = 0; z< 5; z++) {
-        for (var y:u32 = 0; y< 5; y++) {
+      for (var z:u32 = 0u; z< 5; z++) {
+        for (var y:u32 = 0u; y< 5; y++) {
   
-            var high:u32 = 0;
-            var low:u32 = 0;
-            for (var i:u32 = 0; i < 64; i++) {
+            var high:u32 = 0u;
+            var low:u32 = 0u;
+            for (var i:u32 = 0u; i < 64; i++) {
                 var bit:u32;
                 if ((i % 2 == 0)){
                   bit = (state[z][y][0] >> (i / 2)) & 1;
@@ -1491,7 +1491,7 @@ export const shader = (nbr_thread: number) => {
               var tmp : u32  = ((state[z][0][x] & 0xFF) << 24) |
                   ((state[z][0][x] & 0xFF00) << 8) |
                   ((state[z][0][x] & 0xFF0000) >> 8) |
-                  ((state[z][0][x] & 0xFF000000) >> 24);
+                  ((state[z][0][x] & 0xFF000000u) >> 24);
               for (var j : u32  = 0; j < 4; j++) {
                   res[i * 4 + j] = (tmp >> (24 - j * 8)) & 0xFF;
               }
@@ -1500,13 +1500,13 @@ export const shader = (nbr_thread: number) => {
       }
 
       var res16 : array<u32, 40>;
-      for (var i : u32 = 0; i < 20; i++) {
+      for (var i : u32 = 0u; i < 20; i++) {
           res16[i * 2] = base16[(res[i+12] >> 4) & 0xF];
           res16[i * 2 + 1] = base16[res[i+12] & 0xF];
       }
       
       var valid : bool = true;
-      for (var i:u32 = 0; i < find[0];i++){
+      for (var i:u32 = 0u; i < find[0];i++){
         if (res16[i] == find[i + 2]){
 
         } else {
@@ -1515,7 +1515,7 @@ export const shader = (nbr_thread: number) => {
       }
       
       if (valid){
-        for (var i:u32 = 0; i<find[1];i++){
+        for (var i:u32 = 0u; i<find[1];i++){
           if (res16[39 - i] == find[39 - i + 2]){
             continue;
           }
@@ -1525,7 +1525,7 @@ export const shader = (nbr_thread: number) => {
 
     if (valid){
         atomicStore(&result[0], glob[global_invocation_index].workerId + 1000);
-        for (var i:u32 = 0; i< 40;i++){
+        for (var i:u32 = 0u; i< 40;i++){
             atomicStore(&result[i+1], res16[i]);
         }
       }
@@ -1575,13 +1575,13 @@ export const shader = (nbr_thread: number) => {
           mul_mod(&y1, &tmp_usr, &z1,0); // y1_affine
   
           
-          for (var i : u32 = 0; i < 8; i++) {
-            for (var j : u32 = 0; j < 4; j++) {
+          for (var i : u32 = 0u; i < 8; i++) {
+            for (var j : u32 = 0u; j < 4; j++) {
               glob[global_invocation_index].ecdsa[(7 - i) * 4 + j] = (x1[i] >> ((3 - j) * 8)) & 0xFF;
             }
           }
-          for (var i : u32 = 0; i < 8; i++) {
-            for (var j : u32 = 0; j < 4; j++) {
+          for (var i : u32 = 0u; i < 8; i++) {
+            for (var j : u32 = 0u; j < 4; j++) {
                 glob[global_invocation_index].ecdsa[32 + (7 - i) * 4 + j] = (y1[i] >> ((3 - j) * 8)) & 0xFF;
             }
           }
