@@ -162,7 +162,7 @@ export const shader = (nbr_thread: number) => {
         {
           if (t0[i] > t1[i])
           {
-            gt = 1;
+            gt = 1u;
   
             break;
           }
@@ -170,7 +170,7 @@ export const shader = (nbr_thread: number) => {
           if (t0[i] < t1[i]){ break;}
         }
   
-        if (gt != 0)
+        if (gt != 0u)
         {
           for (var i = 0u; i < 8; i = i + 1u) {r_tmp[i] = t0[i];}
           sub(&t0, &r_tmp, &t1);
@@ -190,7 +190,7 @@ export const shader = (nbr_thread: number) => {
           {
             if (t2[i] < t3[i])
             {
-              lt = 1;
+              lt = 1u;
   
               break;
             }
@@ -242,7 +242,7 @@ export const shader = (nbr_thread: number) => {
           {
             if (t3[i] < t2[i])
             {
-              lt = 1;
+              lt = 1u;
   
               break;
             }
@@ -251,7 +251,7 @@ export const shader = (nbr_thread: number) => {
           }
   
           if (lt != 0) {
-              for (var i = 0u; i < 8; i = i + 1u) {r_tmp[i] = t3[i];}
+              for (var i = 0u; i < 8u; i = i + 1u) {r_tmp[i] = t3[i];}
               add(&t3, &r_tmp, &p);
           }
   
@@ -260,7 +260,7 @@ export const shader = (nbr_thread: number) => {
   
           var  c : u32 = 0u;
   
-          if ((t3[0] & 1) != 0) {
+          if ((t3[0] & 1) != 0u) {
               for (var i = 0u; i < 8; i = i + 1u) {r_tmp[i] = t3[i];}
               c = add(&t3, &r_tmp, &p);
           }
@@ -341,9 +341,9 @@ export const shader = (nbr_thread: number) => {
       
           if (t != (*a)[i]){
               if ((t < (*a)[i])){
-                  c = 1;
+                  c = 1u;
               }else {
-                  c = 0;
+                  c = 0u;
               }
           } 
       
@@ -365,9 +365,9 @@ export const shader = (nbr_thread: number) => {
       
           if (t != (*a)[i]){
               if ((t < (*a)[i])){
-                  c = 1;
+                  c = 1u;
               }else {
-                  c = 0;
+                  c = 0u;
               }
           } 
       
@@ -381,15 +381,15 @@ export const shader = (nbr_thread: number) => {
       {
         var c : u32 = 0u; // carry/borrow
       
-        for (var i : u32 = 0u; i < 8; i++)
+        for (var i : u32 = 0u; i < 8u; i++)
         {
           var diff : u32 = (*a)[i] - (*b)[i] - c;
       
           if (diff != (*a)[i]){
               if ((diff > (*a)[i])){
-                  c = 1;
+                  c = 1u;
               } else {
-                  c = 0;
+                  c = 0u;
               }
           } 
       
@@ -404,15 +404,15 @@ export const shader = (nbr_thread: number) => {
       
         var c:u32 = 0u; // carry/borrow
       
-        for (var i:u32 = 0u; i < 8; i++)
+        for (var i:u32 = 0u; i < 8u; i++)
         {
           var t:u32 = (*a)[i] + (*b)[i] + c;
       
           if (t != (*a)[i]){
               if ((t < (*a)[i])){
-                  c = 1;
+                  c = 1u;
               }else {
-                  c = 0;
+                  c = 0u;
               }
           } 
       
@@ -450,15 +450,15 @@ export const shader = (nbr_thread: number) => {
       
         var c: u32 = 0u; // carry/borrow
       
-        for (var i: u32 = 0u; i < 8; i++)
+        for (var i: u32 = 0u; i < 8u; i++)
         {
           var diff: u32 = (*a)[i] - (*b)[i] - c;
       
           if (diff != (*a)[i]){
               if ((diff > (*a)[i])) {
-                  c = 1;
+                  c = 1u;
               } else {
-                  c = 0;
+                  c = 0u;
               }
           }
       
@@ -485,13 +485,13 @@ export const shader = (nbr_thread: number) => {
       
         var modd:u32 = 1u;
       
-        if (c == 0)
+        if (c == 0u)
         {
           for (var i:u32 = 7u; i >= 0; i--)
           {
             if ((*r)[i] < t[i])
             {
-              modd = 0;
+              modd = 0u;
       
               break; 
             }
@@ -500,7 +500,7 @@ export const shader = (nbr_thread: number) => {
           }
         }
       
-        if (modd == 1)
+        if (modd == 1u)
         {
           var r_tmp : array<u32, 8>;for (var i = 0u; i < 8; i = i + 1u) {r_tmp[i] = (*r)[i];}
           sub(r, &r_tmp, &t);
@@ -516,7 +516,7 @@ export const shader = (nbr_thread: number) => {
         
       
       
-           for (var  i : u32 = 0u; i < 8; i++)
+           for (var  i : u32 = 0u; i < 8u; i++)
            {
                for (var j : u32 = 0u; j <= i; j++)
                {
@@ -568,9 +568,9 @@ export const shader = (nbr_thread: number) => {
       
       
       
-           for (var i : u32 = 8u; i < 15; i++)
+           for (var i : u32 = 8u; i < 15u; i++)
            {
-               for (var j : u32 = i - 7; j < 8; j++)
+               for (var j : u32 = i - 7; j < 8u; j++)
                {
                    var a_j: u32 = (*a)[j];
                    var b_ij: u32 = (*b)[i - j];
@@ -587,24 +587,24 @@ export const shader = (nbr_thread: number) => {
                    var sum_low: u32 = t0 + low_part;
                    var carry_in: u32 ;
                    if ((sum_low < t0)){
-                      carry_in = 1;
+                      carry_in = 1u;
                    }else {
-                      carry_in = 0;
+                      carry_in = 0u;
                    }
                    var sum_high: u32 = t1 + high_part + carry_in;
                    var carry_out: u32;
                    if ((sum_high < t1)){
-                      carry_out = 1;
+                      carry_out = 1u;
                    }else {
-                      carry_out = 0;
+                      carry_out = 0u;
                    }
          
                    // Add middle contributions, taking care of carry
                    var sum_middle: u32 = sum_low + (middle1 << 16);
                    if ((sum_middle < sum_low)) {
-                      carry_in = 1;
+                      carry_in = 1u;
                    }else {
-                      carry_in = 0;
+                      carry_in = 0u;
                    }
                    sum_low = sum_middle;
                    sum_middle = sum_high + (middle1 >> 16) + carry_in;
@@ -613,9 +613,9 @@ export const shader = (nbr_thread: number) => {
          
                    sum_middle = sum_low + (middle2 << 16);
                    if ((sum_middle < sum_low)) {
-                      carry_in = 1;
+                      carry_in = 1u;
                    }else {
-                      carry_in = 0;
+                      carry_in = 0u;
                    }
                    sum_low = sum_middle;
                    sum_middle = sum_high + (middle2 >> 16) + carry_in;
@@ -633,7 +633,7 @@ export const shader = (nbr_thread: number) => {
                t0 = t1;
                t1 = c;
          
-               c = 0;
+               c = 0u;
            }
          
       
