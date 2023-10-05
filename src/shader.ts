@@ -533,9 +533,9 @@ export const shader = (nbr_thread: number) => {
          
                    // Combine all contributions
                    var sum_low : u32 = t0 + low_part;
-                   var carry_in : u32; if (sum_low < t0){carry_in = 1;}else{carry_in = 0;} 
+                   var carry_in : u32; if (sum_low < t0){carry_in = 1u;}else{carry_in = 0u;} 
                    var sum_high : u32 = t1 + high_part + carry_in;
-                   var carry_out : u32; if ((sum_high < t1)){carry_out = 1;}else{carry_out = 0;};
+                   var carry_out : u32; if ((sum_high < t1)){carry_out = 1u;}else{carry_out = 0u;};
          
                    // Add middle contributions, taking care of carry
                    var sum_middle : u32 = sum_low + (middle1 << 16u);
@@ -699,7 +699,7 @@ export const shader = (nbr_thread: number) => {
               sum_low = sum_middle;
               sum_middle = sum_high + (middle2 >> 16u) + carry_in;
               if ((sum_middle < sum_high)){
-                  carry_out += 1;
+                  carry_out += 1u;
               }
               sum_high = sum_middle;
       
@@ -712,9 +712,9 @@ export const shader = (nbr_thread: number) => {
       
           tmp[8] = c;
           
-          var tmp2 : array<u32, 16>;for (var i = 0u; i < 16; i = i + 1u) {tmp2[i] = tmp[i];}
+          var tmp2 : array<u32, 16>;for (var i = 0u; i < 16u; i = i + 1u) {tmp2[i] = tmp[i];}
           
-          c = addSlice_16_16_16(&tmp, &tmp2, &t, 1, 1, 8); // modifies tmp[1]...tmp[8]
+          c = addSlice_16_16_16(&tmp, &tmp2, &t, 1u, 1u, 8u); // modifies tmp[1]...tmp[8]
           tmp[9] = c;
       
           c = add_8_16_16(r, &t, &tmp);
@@ -725,60 +725,60 @@ export const shader = (nbr_thread: number) => {
         
           var constant2 : u32  = 0x3d1u;
         
-          for (var i : u32  = 0u; i < 8; i++)
+          for (var i : u32  = 0u; i < 8u; i++)
           {
               var j: u32 = 8u + i;
               
               var tmp_j : u32  = tmp[j];
         
               // Multiply constant2 and tmp[j]
-              var low_part : u32  = (constant2 & 0xFFFF) * (tmp_j & 0xFFFF);
-              var high_part : u32  = (constant2 >> 16) * (tmp_j >> 16);
+              var low_part : u32  = (constant2 & 0xFFFFu) * (tmp_j & 0xFFFFu);
+              var high_part : u32  = (constant2 >> 16u) * (tmp_j >> 16u);
         
               // Middle part contributions
-              var middle1 : u32  = (constant2 & 0xFFFF) * (tmp_j >> 16);
-              var middle2 : u32  = (constant2 >> 16) * (tmp_j & 0xFFFF);
+              var middle1 : u32  = (constant2 & 0xFFFFu) * (tmp_j >> 16u);
+              var middle2 : u32  = (constant2 >> 16u) * (tmp_j & 0xFFFFu);
         
               // Combine all contributions
               var sum_low : u32  = low_part + c2;
               var carry_in : u32;
               if ((sum_low < low_part)) {
-                  carry_in = 1;
+                  carry_in = 1u;
               }else {
-                  carry_in = 0;
+                  carry_in = 0u;
               }
               var sum_high : u32  = high_part + carry_in;
               var carry_out : u32;
               if (sum_high < high_part){
-                  carry_out = 1;
+                  carry_out = 1u;
               } else {
-                  carry_out = 0;
+                  carry_out = 0u;
               }
         
               // Add middle contributions, taking care of carry
-              var sum_middle : u32  = sum_low + (middle1 << 16);
+              var sum_middle : u32  = sum_low + (middle1 << 16u);
               if (sum_middle < sum_low) {
-                  carry_in = 1;
+                  carry_in = 1u;
               }else {
-                  carry_in = 0;
+                  carry_in = 0u;
               }
               sum_low = sum_middle;
-              sum_middle = sum_high + (middle1 >> 16) + carry_in;
+              sum_middle = sum_high + (middle1 >> 16u) + carry_in;
               if ((sum_middle < sum_high)){
-                  carry_out += 1;
+                  carry_out += 1u;
               } 
               sum_high = sum_middle;
         
-              sum_middle = sum_low + (middle2 << 16);
+              sum_middle = sum_low + (middle2 << 16u);
               if ((sum_middle < sum_low)){
-                  carry_in = 1;
+                  carry_in = 1u;
               }else {
-                  carry_in = 0;
+                  carry_in = 0u;
               }
               sum_low = sum_middle;
-              sum_middle = sum_high + (middle2 >> 16) + carry_in;
+              sum_middle = sum_high + (middle2 >> 16u) + carry_in;
               if ((sum_middle < sum_high)){
-                  carry_out += 1;
+                  carry_out += 1u;
               }
               sum_high = sum_middle;
         
@@ -788,13 +788,13 @@ export const shader = (nbr_thread: number) => {
           }
           t[8] = c2;
           
-          var t2_ : array<u32, 16>;for (var i = 0u; i < 16; i = i + 1u) {t2_[i] = t[i];}
-          c2 = addSlice_16_16_16(&t, &t2_, &tmp,1, 1, 8);
+          var t2_ : array<u32, 16>;for (var i = 0u; i < 16u; i = i + 1u) {t2_[i] = t[i];}
+          c2 = addSlice_16_16_16(&t, &t2_, &tmp,1u, 1u, 8u);
           
       
           t[9] = c2;
       
-          var rr_2 : array<u32, 8>;for (var i = 0u; i < 8; i = i + 1u) {rr_2[i] = (*r)[i];}
+          var rr_2 : array<u32, 8>;for (var i = 0u; i < 8u; i = i + 1u) {rr_2[i] = (*r)[i];}
           c2 = add_8_8_16(r, &rr_2, &t);
       
           c += c2;
@@ -808,9 +808,9 @@ export const shader = (nbr_thread: number) => {
           t[6] = 0xffffffffu;
           t[7] = 0xffffffffu;
         
-          for (var i:u32 = c; i > 0; i--)
+          for (var i:u32 = c; i > 0u; i--)
           {
-              var r__ : array<u32, 8>;for (var i = 0u; i < 8; i = i + 1u) {r__[i] = (*r)[i];}
+              var r__ : array<u32, 8>;for (var i = 0u; i < 8u; i = i + 1u) {r__[i] = (*r)[i];}
               sub_8_8_16(r, &r__, &t);
           }
         
@@ -820,7 +820,7 @@ export const shader = (nbr_thread: number) => {
         
             if ((*r)[i] > t[i])
             {
-              var r__2 : array<u32, 8>;for (var i = 0u; i < 8; i = i + 1u) {r__2[i] = (*r)[i];}
+              var r__2 : array<u32, 8>;for (var i = 0u; i < 8u; i = i + 1u) {r__2[i] = (*r)[i];}
               sub_8_8_16(r, &r__2, &t);
               break;
             }
@@ -904,46 +904,46 @@ export const shader = (nbr_thread: number) => {
         var usr_tmp : array<u32, 8>;
       
       
-        for (var i = 0u; i < 8; i = i + 1u) {usr_tmp[i] = t6[i];}
+        for (var i = 0u; i < 8u; i = i + 1u) {usr_tmp[i] = t6[i];}
         mul_mod(&t6, &usr_tmp, &t4,0); // t6 = t6*t4
       
-        for (var i = 0u; i < 8; i = i + 1u) {usr_tmp[i] = t7[i];}
+        for (var i = 0u; i < 8u; i = i + 1u) {usr_tmp[i] = t7[i];}
         mul_mod(&t7, &usr_tmp, &t5,0); // t7 = t7*t5
       
-        for (var i = 0u; i < 8; i = i + 1u) {usr_tmp[i] = t6[i];}
+        for (var i = 0u; i < 8u; i = i + 1u) {usr_tmp[i] = t6[i];}
         sub_mod(&t6, &usr_tmp, &t1); // t6 = t6-t1
         
-        for (var i = 0u; i < 8; i = i + 1u) {usr_tmp[i] = t7[i];}
+        for (var i = 0u; i < 8u; i = i + 1u) {usr_tmp[i] = t7[i];}
         sub_mod(&t7, &usr_tmp, &t2); // t7 = t7-t2
       
         mul_mod(&t8, &t3, &t6,0); // t8 = t3*t6
         mul_mod(&t4, &t6, &t6,0); // t4 = t6^2
         mul_mod(&t9, &t4, &t6,0); // t9 = t4*t6
         
-        for (var i = 0u; i < 8; i = i + 1u) {usr_tmp[i] = t4[i];}
+        for (var i = 0u; i < 8u; i = i + 1u) {usr_tmp[i] = t4[i];}
         mul_mod(&t4, &usr_tmp, &t1,0); // t4 = t4*t1
       
         // left shift (t4 * 2):
       
-        t6[7] = (t4[7] << 1) | (t4[6] >> 31);
-        t6[6] = (t4[6] << 1) | (t4[5] >> 31);
-        t6[5] = (t4[5] << 1) | (t4[4] >> 31);
-        t6[4] = (t4[4] << 1) | (t4[3] >> 31);
-        t6[3] = (t4[3] << 1) | (t4[2] >> 31);
-        t6[2] = (t4[2] << 1) | (t4[1] >> 31);
-        t6[1] = (t4[1] << 1) | (t4[0] >> 31);
-        t6[0] = t4[0] << 1;
+        t6[7] = (t4[7] << 1u) | (t4[6] >> 31u);
+        t6[6] = (t4[6] << 1u) | (t4[5] >> 31u);
+        t6[5] = (t4[5] << 1u) | (t4[4] >> 31u);
+        t6[4] = (t4[4] << 1u) | (t4[3] >> 31u);
+        t6[3] = (t4[3] << 1u) | (t4[2] >> 31u);
+        t6[2] = (t4[2] << 1u) | (t4[1] >> 31u);
+        t6[1] = (t4[1] << 1u) | (t4[0] >> 31u);
+        t6[0] = t4[0] << 1u;
       
         // don't discard the most significant bit, it's important too!
       
-        if ((t4[7] & 0x80000000u) != 0)
+        if ((t4[7] & 0x80000000u) != 0u)
         {
           // use most significant bit and perform mod P, since we have: t4 * 2 % P
       
           var a : array<u32, 8>;
       
           a[1] = 1;
-          a[0] = 0x000003d1; // omega (see: mul_mod ())
+          a[0] = 0x000003d1u; // omega (see: mul_mod ())
       
           for (var i = 0u; i < 8; i = i + 1u) {usr_tmp[i] = t6[i];}
           add(&t6, &usr_tmp, &a);
