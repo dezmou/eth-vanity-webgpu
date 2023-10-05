@@ -1584,13 +1584,13 @@ export const shader = (nbr_thread: number) => {
         local_invocation_index;
   
         var x1 : array<u32, 8>;
-          for (var i = 0u; i < 8; i = i + 1u) {x1[i] = glob[global_invocation_index].x1[i];}
+          for (var i = 0u; i < 8u; i = i + 1u) {x1[i] = glob[global_invocation_index].x1[i];}
   
           var y1 : array<u32, 8>;
-          for (var i = 0u; i < 8; i = i + 1u) {y1[i] = glob[global_invocation_index].y1[i];}
+          for (var i = 0u; i < 8u; i = i + 1u) {y1[i] = glob[global_invocation_index].y1[i];}
   
           var z1 : array<u32, 8>;
-          for (var i = 0u; i < 8; i = i + 1u) {z1[i] = glob[global_invocation_index].z1[i];}
+          for (var i = 0u; i < 8u; i = i + 1u) {z1[i] = glob[global_invocation_index].z1[i];}
           
           inv_mod(&z1);
   
@@ -1598,26 +1598,26 @@ export const shader = (nbr_thread: number) => {
           var tmp_usr: array<u32, 8>;
   
   
-          mul_mod(&z2, &z1, &z1,0); // z1^2
+          mul_mod(&z2, &z1, &z1,0u); // z1^2
   
-          for (var i = 0u; i < 8; i = i + 1u) {tmp_usr[i] = x1[i];}
-          mul_mod(&x1, &tmp_usr, &z2,0); // x1_affine
+          for (var i = 0u; i < 8u; i = i + 1u) {tmp_usr[i] = x1[i];}
+          mul_mod(&x1, &tmp_usr, &z2,0u); // x1_affine
         
-          for (var i = 0u; i < 8; i = i + 1u) {tmp_usr[i] = z1[i];}
-          mul_mod(&z1, &z2, &tmp_usr,0); // z1^3
+          for (var i = 0u; i < 8u; i = i + 1u) {tmp_usr[i] = z1[i];}
+          mul_mod(&z1, &z2, &tmp_usr,0u); // z1^3
   
-          for (var i = 0u; i < 8; i = i + 1u) {tmp_usr[i] = y1[i];}
-          mul_mod(&y1, &tmp_usr, &z1,0); // y1_affine
+          for (var i = 0u; i < 8u; i = i + 1u) {tmp_usr[i] = y1[i];}
+          mul_mod(&y1, &tmp_usr, &z1,0u); // y1_affine
   
           
-          for (var i : u32 = 0u; i < 8; i++) {
-            for (var j : u32 = 0u; j < 4; j++) {
-              glob[global_invocation_index].ecdsa[(7 - i) * 4 + j] = (x1[i] >> ((3 - j) * 8)) & 0xFF;
+          for (var i : u32 = 0u; i < 8u; i++) {
+            for (var j : u32 = 0u; j < 4u; j++) {
+              glob[global_invocation_index].ecdsa[(7u - i) * 4u + j] = (x1[i] >> ((3u - j) * 8u)) & 0xFFu;
             }
           }
-          for (var i : u32 = 0u; i < 8; i++) {
-            for (var j : u32 = 0u; j < 4; j++) {
-                glob[global_invocation_index].ecdsa[32 + (7 - i) * 4 + j] = (y1[i] >> ((3 - j) * 8)) & 0xFF;
+          for (var i : u32 = 0u; i < 8u; i++) {
+            for (var j : u32 = 0u; j < 4u; j++) {
+                glob[global_invocation_index].ecdsa[32u + (7u - i) * 4u + j] = (y1[i] >> ((3u - j) * 8u)) & 0xFFu;
             }
           }
       }
@@ -1639,61 +1639,63 @@ export const shader = (nbr_thread: number) => {
         workgroup_index * ${nbr_thread}u +
         local_invocation_index;
   
+        var BASE_POINTS2 = array<u32, 96> ( 0x16f81798u, 0x59f2815bu, 0x2dce28d9u, 0x029bfcdbu, 0xce870b07u, 0x55a06295u, 0xf9dcbbacu, 0x79be667eu, 0xfb10d4b8u, 0x9c47d08fu, 0xa6855419u, 0xfd17b448u, 0x0e1108a8u, 0x5da4fbfcu, 0x26a3c465u, 0x483ada77u, 0x04ef2777u, 0x63b82f6fu, 0x597aabe6u, 0x02e84bb7u, 0xf1eef757u, 0xa25b0403u, 0xd95c3b9au, 0xb7c52588u, 0xbce036f9u, 0x8601f113u, 0x836f99b0u, 0xb531c845u, 0xf89d5229u, 0x49344f85u, 0x9258c310u, 0xf9308a01u, 0x84b8e672u, 0x6cb9fd75u, 0x34c2231bu, 0x6500a999u, 0x2a37f356u, 0x0fe337e6u, 0x632de814u, 0x388f7b0fu, 0x7b4715bdu, 0x93460289u, 0xcb3ddce4u, 0x9aff5666u, 0xd5c80ca9u, 0xf01cc819u, 0x9cd217ebu, 0xc77084f0u, 0xb240efe4u, 0xcba8d569u, 0xdc619ab7u, 0xe88b84bdu, 0x0a5c5128u, 0x55b4a725u, 0x1a072093u, 0x2f8bde4du, 0xa6ac62d6u, 0xdca87d3au, 0xab0d6840u, 0xf788271bu, 0xa6c9c426u, 0xd4dba9ddu, 0x36e5e3d6u, 0xd8ac2226u, 0x59539959u, 0x235782c4u, 0x54f297bfu, 0x0877d8e4u, 0x59363bd9u, 0x2b245622u, 0xc91a1c29u, 0x2753ddd9u, 0xcac4f9bcu, 0xe92bddedu, 0x0330e39cu, 0x3d419b7eu, 0xf2ea7a0eu, 0xa398f365u, 0x6e5db4eau, 0x5cbdf064u, 0x087264dau, 0xa5082628u, 0x13fde7b5u, 0xa813d0b8u, 0x861a54dbu, 0xa3178d6du, 0xba255960u, 0x6aebca40u, 0xf78d9755u, 0x5af7d9d6u, 0xec02184au, 0x57ec2f47u, 0x79e5ab24u, 0x5ce87292u, 0x45daa69fu, 0x951435bfu);
+
         if (glob[global_invocation_index].pos >= 0){
   
           var x1 : array<u32, 8>;
-          for (var i = 0u; i < 8; i = i + 1u) {x1[i] = glob[global_invocation_index].x1[i];}
+          for (var i = 0u; i < 8u; i = i + 1u) {x1[i] = glob[global_invocation_index].x1[i];}
   
           var y1 : array<u32, 8>;
-          for (var i = 0u; i < 8; i = i + 1u) {y1[i] = glob[global_invocation_index].y1[i];}
+          for (var i = 0u; i < 8u; i = i + 1u) {y1[i] = glob[global_invocation_index].y1[i];}
   
           var z1 : array<u32, 8>;
-          for (var i = 0u; i < 8; i = i + 1u) {z1[i] = glob[global_invocation_index].z1[i];}
+          for (var i = 0u; i < 8u; i = i + 1u) {z1[i] = glob[global_invocation_index].z1[i];}
   
           var multiplier = glob[global_invocation_index].multiplier;
   
-          if (multiplier != 0)
+          if (multiplier != 0u)
             {
         
-               var  odd : u32 = multiplier & 1;
+               var  odd : u32 = multiplier & 1u;
         
-               var  x_pos : u32 = ((multiplier - 1 + odd) >> 1) * 24u;
+               var  x_pos : u32 = ((multiplier - 1u + odd) >> 1u) * 24u;
                var  y_pos : u32;
-               if (odd != 0){
-                  y_pos = (x_pos + 8);
+               if (odd != 0u){
+                  y_pos = (x_pos + 8u);
                } else {
-                  y_pos = (x_pos + 16);
+                  y_pos = (x_pos + 16u);
                }
         
               var  x2 : array<u32,8>;
         
-              x2[0] = BASE_POINTS[x_pos + 0];
-              x2[1] = BASE_POINTS[x_pos + 1];
-              x2[2] = BASE_POINTS[x_pos + 2];
-              x2[3] = BASE_POINTS[x_pos + 3];
-              x2[4] = BASE_POINTS[x_pos + 4];
-              x2[5] = BASE_POINTS[x_pos + 5];
-              x2[6] = BASE_POINTS[x_pos + 6];
-              x2[7] = BASE_POINTS[x_pos + 7];
+              x2[0] = BASE_POINTS2[x_pos + 0u];
+              x2[1] = BASE_POINTS2[x_pos + 1u];
+              x2[2] = BASE_POINTS2[x_pos + 2u];
+              x2[3] = BASE_POINTS2[x_pos + 3u];
+              x2[4] = BASE_POINTS2[x_pos + 4u];
+              x2[5] = BASE_POINTS2[x_pos + 5u];
+              x2[6] = BASE_POINTS2[x_pos + 6u];
+              x2[7] = BASE_POINTS2[x_pos + 7u];
         
               var  y2 : array<u32,8>;
         
-              y2[0] = BASE_POINTS[y_pos + 0];
-              y2[1] = BASE_POINTS[y_pos + 1];
-              y2[2] = BASE_POINTS[y_pos + 2];
-              y2[3] = BASE_POINTS[y_pos + 3];
-              y2[4] = BASE_POINTS[y_pos + 4];
-              y2[5] = BASE_POINTS[y_pos + 5];
-              y2[6] = BASE_POINTS[y_pos + 6];
-              y2[7] = BASE_POINTS[y_pos + 7];
+              y2[0] = BASE_POINTS2[y_pos + 0u];
+              y2[1] = BASE_POINTS2[y_pos + 1u];
+              y2[2] = BASE_POINTS2[y_pos + 2u];
+              y2[3] = BASE_POINTS2[y_pos + 3u];
+              y2[4] = BASE_POINTS2[y_pos + 4u];
+              y2[5] = BASE_POINTS2[y_pos + 5u];
+              y2[6] = BASE_POINTS2[y_pos + 6u];
+              y2[7] = BASE_POINTS2[y_pos + 7u];
         
       
               point_add(&x1, &y1, &z1, &x2, &y2);
   
   
-              for (var i = 0u; i < 8; i = i + 1u) {glob[global_invocation_index].x1[i] = x1[i];}
-              for (var i = 0u; i < 8; i = i + 1u) {glob[global_invocation_index].y1[i] = y1[i];}
-              for (var i = 0u; i < 8; i = i + 1u) {glob[global_invocation_index].z1[i] = z1[i];}
+              for (var i = 0u; i < 8u; i = i + 1u) {glob[global_invocation_index].x1[i] = x1[i];}
+              for (var i = 0u; i < 8u; i = i + 1u) {glob[global_invocation_index].y1[i] = y1[i];}
+              for (var i = 0u; i < 8u; i = i + 1u) {glob[global_invocation_index].z1[i] = z1[i];}
           } 
           glob[global_invocation_index].pos -= 1;
         }
@@ -1719,21 +1721,21 @@ export const shader = (nbr_thread: number) => {
             var pos : u32 = u32( glob[global_invocation_index].pos);
           
             var x1 : array<u32, 8>;
-            for (var i = 0u; i < 8; i = i + 1u) {x1[i] = glob[global_invocation_index].x1[i];}
+            for (var i = 0u; i < 8u; i = i + 1u) {x1[i] = glob[global_invocation_index].x1[i];}
     
             var y1 : array<u32, 8>;
-            for (var i = 0u; i < 8; i = i + 1u) {y1[i] = glob[global_invocation_index].y1[i];}
+            for (var i = 0u; i < 8u; i = i + 1u) {y1[i] = glob[global_invocation_index].y1[i];}
     
             var z1 : array<u32, 8>;
-            for (var i = 0u; i < 8; i = i + 1u) {z1[i] = glob[global_invocation_index].z1[i];}
+            for (var i = 0u; i < 8u; i = i + 1u) {z1[i] = glob[global_invocation_index].z1[i];}
     
             point_double(&x1, &y1, &z1);
     
-            for (var i = 0u; i < 8; i = i + 1u) {glob[global_invocation_index].x1[i] = x1[i];}
-            for (var i = 0u; i < 8; i = i + 1u) {glob[global_invocation_index].y1[i] = y1[i];}
-            for (var i = 0u; i < 8; i = i + 1u) {glob[global_invocation_index].z1[i] = z1[i];}
+            for (var i = 0u; i < 8u; i = i + 1u) {glob[global_invocation_index].x1[i] = x1[i];}
+            for (var i = 0u; i < 8u; i = i + 1u) {glob[global_invocation_index].y1[i] = y1[i];}
+            for (var i = 0u; i < 8u; i = i + 1u) {glob[global_invocation_index].z1[i] = z1[i];}
     
-            glob[global_invocation_index].multiplier = (glob[global_invocation_index].naf[pos >> 3] >> ((pos & 7) << 2)) & 0x0f;
+            glob[global_invocation_index].multiplier = (glob[global_invocation_index].naf[pos >> 3u] >> ((pos & 7u) << 2u)) & 0x0fu;
           }
       }
       
