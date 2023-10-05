@@ -168,7 +168,7 @@ function App() {
             </div>
             <br />
             <div>
-              Vanity address generator has been there for a long time, this version unlock up to 20 time the speed of the CPU version like <a href="https://vanity-eth.tk">vanity-eth.tk</a> by using <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebGPU_API">WebGPU</a>
+              Vanity address generator has been there for a long time, this version unlocks up to 20 time the speed of the CPU version like <a href="https://vanity-eth.tk">vanity-eth.tk</a> by using <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebGPU_API">WebGPU</a>
             </div>
           </div>
         </div>

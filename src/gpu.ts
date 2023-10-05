@@ -3,7 +3,7 @@ import { shader } from "./shader";
 
 declare const Base58: any;
 
-const NB_ITER = 768;
+const NB_ITER = 256;
 const NB_THREAD = 64;
 
 function uint32ArrayToHexString(arr: number[]) {
@@ -23,6 +23,9 @@ export const gpu = async (
     }
 ) => {
     const adapter = (await navigator.gpu.requestAdapter())!;
+    adapter.features.forEach(e => {
+        console.log(e);
+    })
     const device = await adapter.requestDevice();
     console.log(device.limits);
 
@@ -153,7 +156,7 @@ export const gpu = async (
         for (let i = 0; i < 40; i++) {
             buf32[i + 2] = find.charCodeAt(i);
         }
-        device.queue.writeBuffer(gpuFind, 0, buf32, 0, 64);
+        device.queue.writeBuffer(gpuFind, 0, buf32, 0, 42);
 
 
         let i = -1;
