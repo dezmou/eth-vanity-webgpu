@@ -1235,7 +1235,7 @@ export const shader = (nbr_thread: number) => {
           var even : u32;
           var odd : u32;
       
-          if (d % 2 == 0u) {
+          if (d % 2u == 0u) {
             even = ((((*a)[0] << (d / 2u))) ^ ((((*a)[0] >> (32u - (d / 2u)))) >> 0u));
             odd = ((((*a)[1] << (d / 2u))) ^ ((((*a)[1] >> (32u - (d / 2u)))) >> 0u));
           } else {
@@ -1255,25 +1255,25 @@ export const shader = (nbr_thread: number) => {
           var C : array<array<u32, 2>,5> ;
           var D : array<array<u32, 2>,5> ;
           
-          for (var x : u32 = 0u; x < 5; x++) {
-              for (var y : u32 = 0u; y < 5; y++) {
-                  C[x][0] = (C[x][0] ^ (*a)[x][y][0]) >> 0;
-                  C[x][1] = (C[x][1] ^ (*a)[x][y][1]) >> 0;
+          for (var x : u32 = 0u; x < 5u; x++) {
+              for (var y : u32 = 0u; y < 5u; y++) {
+                  C[x][0] = (C[x][0] ^ (*a)[x][y][0]) >> 0u;
+                  C[x][1] = (C[x][1] ^ (*a)[x][y][1]) >> 0u;
               }
           }
-          for (var x : u32 = 0u; x < 5; x++) {
+          for (var x : u32 = 0u; x < 5u; x++) {
               var tmp : array<u32,2>;
               var tmp2 : array<u32,2>;
-              tmp2[0] = C[(x + 1) % 5][0];
-              tmp2[1] = C[(x + 1) % 5][1];
-              ROT(&tmp,&tmp2, 1);
-              D[x][0] = (C[(x + 4) % 5][0] ^ tmp[0]) >> 0;
-              D[x][1] = (C[(x + 4) % 5][1] ^ tmp[1]) >> 0;
+              tmp2[0] = C[(x + 1u) % 5u][0];
+              tmp2[1] = C[(x + 1u) % 5u][1];
+              ROT(&tmp,&tmp2, 1u);
+              D[x][0] = (C[(x + 4u) % 5u][0] ^ tmp[0]) >> 0u;
+              D[x][1] = (C[(x + 4u) % 5u][1] ^ tmp[1]) >> 0u;
           }
-          for (var x : u32 = 0u; x < 5; x++) {
-              for (var y : u32 = 0u; y < 5; y++) {
-                  (*a)[x][y][0] = ((*a)[x][y][0] ^ D[x][0]) >> 0;
-                  (*a)[x][y][1] = ((*a)[x][y][1] ^ D[x][1]) >> 0;
+          for (var x : u32 = 0u; x < 5u; x++) {
+              for (var y : u32 = 0u; y < 5u; y++) {
+                  (*a)[x][y][0] = ((*a)[x][y][0] ^ D[x][0]) >> 0u;
+                  (*a)[x][y][1] = ((*a)[x][y][1] ^ D[x][1]) >> 0u;
               }
           }
           var x : u32 = 1u;
@@ -1281,16 +1281,16 @@ export const shader = (nbr_thread: number) => {
           var current : array<u32,2>; 
           current[0] = (*a)[x][y][0];
           current[1] = (*a)[x][y][1];
-          for (var t : u32 = 0u; t < 24; t++) {
+          for (var t : u32 = 0u; t < 24u; t++) {
               var X : u32 = y;
-              var Y : u32 = (2 * x + 3 * y) % 5;
+              var Y : u32 = (2u * x + 3u * y) % 5u;
               var tmp : array<u32,2>;
               tmp[0] = (*a)[X][Y][0];
               tmp[1] = (*a)[X][Y][1];
               var tmp2 : array<u32,2>;
               tmp2[0] = (*a)[X][Y][0];
               tmp2[1] = (*a)[X][Y][1];
-              ROT(&tmp2, &current, ((t + 1) * (t + 2) / 2) % 64);
+              ROT(&tmp2, &current, ((t + 1u) * (t + 2u) / 2u) % 64u);
               (*a)[X][Y][0] = tmp2[0];
               (*a)[X][Y][1] = tmp2[1];
               current[0] = tmp[0];
