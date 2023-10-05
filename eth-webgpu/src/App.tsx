@@ -11,7 +11,7 @@ function Item(p: { private: string, public: string }) {
       display: "flex",
       width: "100%",
       justifyContent: "space-evenly",
-      height : "2.5rem",
+      height: "2.5rem",
     }}>
       <div style={{
         width: "25rem",
@@ -46,7 +46,7 @@ function Item(p: { private: string, public: string }) {
 
 function App() {
   const gp = useRef<any>(null)
-  const [prefix, setPrefix] = useState<string>("aaa")
+  const [prefix, setPrefix] = useState<string>("aaaaa")
   const [suffix, setSuffix] = useState<string>("")
   const [state, setState] = useState<"new" | "compiling" | "running" | "stopped">("new")
   const [total, setTotal] = useState<number>(0)
@@ -119,7 +119,9 @@ function App() {
             if (state === "new") {
               setState("compiling")
             }
-            gp.current.run(prefix, suffix)
+            setTimeout(() => {
+              gp.current.run(prefix, suffix)
+            }, 500)
           }}>
             Start
           </Button>
@@ -193,6 +195,7 @@ function App() {
       }}>
         <div style={{
           width: "95vw",
+          maxWidth: "70rem",
           border: "1px solid #ccc",
         }}>
           {found.map((e, i) => <div style={{

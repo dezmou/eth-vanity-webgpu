@@ -139,6 +139,8 @@ export const gpu = async (
     let running = false;
     let finished = false;
     let compiled = false;
+    let lastFoundIndex = 0;
+
     const run = async (prefix: string, suffix: string) => {
         running = true;
         finished = false;
@@ -154,7 +156,6 @@ export const gpu = async (
         device.queue.writeBuffer(gpuFind, 0, buf32, 0, 42);
 
 
-        let lastFoundIndex = 0;
         let i = -1;
         while (running) {
             i += 1;
