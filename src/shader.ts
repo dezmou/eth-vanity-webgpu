@@ -34,7 +34,7 @@ export const shader = (nbr_thread: number) => {
         array<u32, 2>(0x00000000u, 0x80000088u), array<u32, 2>(0x00000001u, 0x00008000u), array<u32, 2>(0x00000000u, 0x80008082u),
       );
   
-    const base16 = array<u32, 16> (48,49,50,51,52,53,54,55,56,57,97,98,99,100,101,102);
+    const base16 = array<u32, 16> (48u,49u,50u,51u,52u,53u,54u,55u,56u,57u,97u,98u,99u,100u,101u,102u);
 
     //   fn ROTLEFT(a : u32, b : u32) -> u32{return (((a) << (b)) | ((a) >> (32-(b))));}
     //   fn ROTRIGHT(a : u32, b : u32) -> u32{return (((a) >> (b)) | ((a) << (32-(b))));}
@@ -318,9 +318,9 @@ export const shader = (nbr_thread: number) => {
       
           if (t != (*a)[aSlice + i]){
               if ((t < (*a)[aSlice + i])){
-                  c = 1;
+                  c = 1u;
               }else {
-                  c = 0;
+                  c = 0u;
               }
           } 
       
@@ -427,7 +427,7 @@ export const shader = (nbr_thread: number) => {
       
           var  c :u32 = sub(r, a, b); // carry
       
-        if (c != 0)
+        if (c != 0u)
         {
           var t : array<u32,8>;
       
@@ -483,11 +483,11 @@ export const shader = (nbr_thread: number) => {
         t[6] = 0xffffffffu;
         t[7] = 0xffffffffu;
       
-        var modd:u32 = 1;
+        var modd:u32 = 1u;
       
         if (c == 0)
         {
-          for (var i:u32 = 7; i >= 0; i--)
+          for (var i:u32 = 7u; i >= 0; i--)
           {
             if ((*r)[i] < t[i])
             {
@@ -512,7 +512,7 @@ export const shader = (nbr_thread: number) => {
       
            var t0 : u32 = 0u;
            var t1 : u32 = 0u;
-           var c : u32  = 0;
+           var c : u32  = 0u;
         
       
       
@@ -563,12 +563,12 @@ export const shader = (nbr_thread: number) => {
                t0 = t1;
                t1 = c;
          
-               c = 0;
+               c = 0u;
            }
       
       
       
-           for (var i : u32 = 8; i < 15; i++)
+           for (var i : u32 = 8u; i < 15; i++)
            {
                for (var j : u32 = i - 7; j < 8; j++)
                {
@@ -645,11 +645,11 @@ export const shader = (nbr_thread: number) => {
       
           var tmp : array<u32, 16>;
       
-          var constant :u32  = 0x03d1;
+          var constant :u32  = 0x03d1u;
       
           for (var i: u32 = 0u; i < 8; i++)
           {
-              var j: u32 = 8 + i;
+              var j: u32 = 8u + i;
               var t_j: u32 = t[j];
       
               // Multiply constant and t[j]
@@ -664,37 +664,37 @@ export const shader = (nbr_thread: number) => {
               var sum_low: u32 = low_part + c;
               var carry_in: u32;
               if ((sum_low < low_part)){
-                  carry_in = 1;
+                  carry_in = 1u;
               }else {
-                  carry_in = 0;
+                  carry_in = 0u;
               }
               var sum_high: u32 = high_part + carry_in;
               var carry_out: u32;
               if ((sum_high < high_part)) {
-                  carry_out = 1;
+                  carry_out = 1u;
               }else {
-                  carry_out = 0;
+                  carry_out = 0u;
               }
       
               // Add middle contributions, taking care of carry
               var sum_middle: u32 = sum_low + (middle1 << 16);
               if ((sum_middle < sum_low)){
-                  carry_in = 1;
+                  carry_in = 1u;
               }else {
-                  carry_in = 0;
+                  carry_in = 0u;
               }
               sum_low = sum_middle;
               sum_middle = sum_high + (middle1 >> 16) + carry_in;
               if ((sum_middle < sum_high)){
-                  carry_out += 1;
+                  carry_out += 1u;
               }
               sum_high = sum_middle;
       
               sum_middle = sum_low + (middle2 << 16);
               if ((sum_middle < sum_low)){
-                  carry_in = 1;
+                  carry_in = 1u;
               }else {
-                  carry_in = 0;
+                  carry_in = 0u;
               }
               sum_low = sum_middle;
               sum_middle = sum_high + (middle2 >> 16) + carry_in;
@@ -719,15 +719,15 @@ export const shader = (nbr_thread: number) => {
       
           c = add_8_16_16(r, &t, &tmp);
       // 
-          var c2 : u32  = 0;
+          var c2 : u32  = 0u;
       
           // memset (t, 0, sizeof (t));
         
-          var constant2 : u32  = 0x3d1;
+          var constant2 : u32  = 0x3d1u;
         
-          for (var i : u32  = 0; i < 8; i++)
+          for (var i : u32  = 0u; i < 8; i++)
           {
-              var j: u32 = 8 + i;
+              var j: u32 = 8u + i;
               
               var tmp_j : u32  = tmp[j];
         
@@ -1136,7 +1136,7 @@ export const shader = (nbr_thread: number) => {
       
       fn convert_to_window_naf( naf : ptr<function, array<u32, 33>>,global_invocation_id : u32) -> u32
       {
-        var loop_start:  u32  = 0;
+        var loop_start:  u32  = 0u;
       
         var n : array<u32, 9> ;
       
@@ -1174,7 +1174,7 @@ export const shader = (nbr_thread: number) => {
       
             // we need to take care of the carry/borrow:
       
-            var k: u32  = 8;
+            var k: u32  = 8u;
       
             if (diff > 0)
             {
@@ -1248,7 +1248,7 @@ export const shader = (nbr_thread: number) => {
     
   
       fn keccak_f_1600(a : ptr<function, array<array<array<u32,2>,5>, 5>>){
-        var nRounds : u32 = 24; 
+        var nRounds : u32 = 24u; 
         
         for (var r : u32 = 0u; r < nRounds; r++) {
           
@@ -1276,7 +1276,7 @@ export const shader = (nbr_thread: number) => {
                   (*a)[x][y][1] = ((*a)[x][y][1] ^ D[x][1]) >> 0;
               }
           }
-          var x : u32 = 1;
+          var x : u32 = 1u;
           var y : u32 = 0u;
           var current : array<u32,2>; 
           current[0] = (*a)[x][y][0];
@@ -1337,7 +1337,7 @@ export const shader = (nbr_thread: number) => {
             // first set:
           var multiplier :  u32 = (naf[loop_start >> 3] >> ((loop_start & 7) << 2)) & 0x0f;
           var odd :  u32 = multiplier & 1;
-          var x_pos :  u32 = ((multiplier - 1 + odd) >> 1) * 24;
+          var x_pos :  u32 = ((multiplier - 1 + odd) >> 1) * 24u;
           var y_pos :  u32;
           if (odd != 0){
               y_pos = (x_pos + 8);
@@ -1418,8 +1418,8 @@ export const shader = (nbr_thread: number) => {
         //   result[i] = in[i];
         // }
   
-      var w : u32 = 64; // for keccak-f[1600]
-      var blocksize : u32 = 1088 / w * 8; // block size in bytes (≡ utf-8 characters)
+      var w : u32 = 64u; // for keccak-f[1600]
+      var blocksize : u32 = 1088u / w * 8u; // block size in bytes (≡ utf-8 characters)
   
       var state : array<array<array<u32,2>,5>, 5>; // should it be init ?
   
@@ -1484,15 +1484,15 @@ export const shader = (nbr_thread: number) => {
         }
       }
   
-      var i : u32 =0 ;
+      var i : u32 =0u ;
       var res : array<u32, 32>;
-      for (var z : u32  = 0; z < 4; z++) {
-          for (var x : u32  = 0; x < 2; x++) {
+      for (var z : u32  = 0u; z < 4; z++) {
+          for (var x : u32  = 0u; x < 2; x++) {
               var tmp : u32  = ((state[z][0][x] & 0xFF) << 24) |
                   ((state[z][0][x] & 0xFF00) << 8) |
                   ((state[z][0][x] & 0xFF0000) >> 8) |
                   ((state[z][0][x] & 0xFF000000u) >> 24);
-              for (var j : u32  = 0; j < 4; j++) {
+              for (var j : u32  = 0u; j < 4; j++) {
                   res[i * 4 + j] = (tmp >> (24 - j * 8)) & 0xFF;
               }
               i+= 1;
@@ -1622,7 +1622,7 @@ export const shader = (nbr_thread: number) => {
         
                var  odd : u32 = multiplier & 1;
         
-               var  x_pos : u32 = ((multiplier - 1 + odd) >> 1) * 24;
+               var  x_pos : u32 = ((multiplier - 1 + odd) >> 1) * 24u;
                var  y_pos : u32;
                if (odd != 0){
                   y_pos = (x_pos + 8);

@@ -50,7 +50,7 @@ function Item(p: { private: string, public: string }) {
 
 function App() {
   const gp = useRef<any>(null)
-  const [prefix, setPrefix] = useState<string>("aaaaa")
+  const [prefix, setPrefix] = useState<string>("aaa")
   const [suffix, setSuffix] = useState<string>("")
   const [state, setState] = useState<"new" | "compiling" | "running" | "stopped">("new")
   const [total, setTotal] = useState<number>(0)
