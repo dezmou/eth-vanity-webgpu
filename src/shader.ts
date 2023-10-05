@@ -898,17 +898,17 @@ export const shader = (nbr_thread: number) => {
         var t8 : array<u32, 8>;
         var t9 : array<u32, 8>;
       
-        mul_mod(&t6, &t3, &t3,0); // t6 = t3^2
-        mul_mod(&t7, &t6, &t3,0); // t7 = t6*t3
+        mul_mod(&t6, &t3, &t3,0u); // t6 = t3^2
+        mul_mod(&t7, &t6, &t3,0u); // t7 = t6*t3
       
         var usr_tmp : array<u32, 8>;
       
       
         for (var i = 0u; i < 8u; i = i + 1u) {usr_tmp[i] = t6[i];}
-        mul_mod(&t6, &usr_tmp, &t4,0); // t6 = t6*t4
+        mul_mod(&t6, &usr_tmp, &t4,0u); // t6 = t6*t4
       
         for (var i = 0u; i < 8u; i = i + 1u) {usr_tmp[i] = t7[i];}
-        mul_mod(&t7, &usr_tmp, &t5,0); // t7 = t7*t5
+        mul_mod(&t7, &usr_tmp, &t5,0u); // t7 = t7*t5
       
         for (var i = 0u; i < 8u; i = i + 1u) {usr_tmp[i] = t6[i];}
         sub_mod(&t6, &usr_tmp, &t1); // t6 = t6-t1
@@ -916,12 +916,12 @@ export const shader = (nbr_thread: number) => {
         for (var i = 0u; i < 8u; i = i + 1u) {usr_tmp[i] = t7[i];}
         sub_mod(&t7, &usr_tmp, &t2); // t7 = t7-t2
       
-        mul_mod(&t8, &t3, &t6,0); // t8 = t3*t6
-        mul_mod(&t4, &t6, &t6,0); // t4 = t6^2
-        mul_mod(&t9, &t4, &t6,0); // t9 = t4*t6
+        mul_mod(&t8, &t3, &t6,0u); // t8 = t3*t6
+        mul_mod(&t4, &t6, &t6,0u); // t4 = t6^2
+        mul_mod(&t9, &t4, &t6,0u); // t9 = t4*t6
         
         for (var i = 0u; i < 8u; i = i + 1u) {usr_tmp[i] = t4[i];}
-        mul_mod(&t4, &usr_tmp, &t1,0); // t4 = t4*t1
+        mul_mod(&t4, &usr_tmp, &t1,0u); // t4 = t4*t1
       
         // left shift (t4 * 2):
       
@@ -942,31 +942,31 @@ export const shader = (nbr_thread: number) => {
       
           var a : array<u32, 8>;
       
-          a[1] = 1;
+          a[1] = 1u;
           a[0] = 0x000003d1u; // omega (see: mul_mod ())
       
-          for (var i = 0u; i < 8; i = i + 1u) {usr_tmp[i] = t6[i];}
+          for (var i = 0u; i < 8u; i = i + 1u) {usr_tmp[i] = t6[i];}
           add(&t6, &usr_tmp, &a);
         }
       
-        mul_mod(&t5, &t7, &t7,0); // t5 = t7*t7
+        mul_mod(&t5, &t7, &t7,0u); // t5 = t7*t7
       
-        for (var i = 0u; i < 8; i = i + 1u) {usr_tmp[i] = t5[i];}
+        for (var i = 0u; i < 8u; i = i + 1u) {usr_tmp[i] = t5[i];}
         sub_mod(&t5, &usr_tmp, &t6); // t5 = t5-t6
         
-        for (var i = 0u; i < 8; i = i + 1u) {usr_tmp[i] = t5[i];}
+        for (var i = 0u; i < 8u; i = i + 1u) {usr_tmp[i] = t5[i];}
         sub_mod(&t5, &usr_tmp, &t9); // t5 = t5-t9
         
-        for (var i = 0u; i < 8; i = i + 1u) {usr_tmp[i] = t4[i];}
+        for (var i = 0u; i < 8u; i = i + 1u) {usr_tmp[i] = t4[i];}
         sub_mod(&t4, &usr_tmp, &t5); // t4 = t4-t5
       
-        for (var i = 0u; i < 8; i = i + 1u) {usr_tmp[i] = t4[i];}
-        mul_mod(&t4, &usr_tmp, &t7,0); // t4 = t4*t7
+        for (var i = 0u; i < 8u; i = i + 1u) {usr_tmp[i] = t4[i];}
+        mul_mod(&t4, &usr_tmp, &t7,0u); // t4 = t4*t7
         
-        for (var i = 0u; i < 8; i = i + 1u) {usr_tmp[i] = t9[i];}
-        mul_mod(&t9, &usr_tmp, &t2,0); // t9 = t9*t2
+        for (var i = 0u; i < 8u; i = i + 1u) {usr_tmp[i] = t9[i];}
+        mul_mod(&t9, &usr_tmp, &t2,0u); // t9 = t9*t2
       
-        for (var i = 0u; i < 8; i = i + 1u) {usr_tmp[i] = t9[i];}
+        for (var i = 0u; i < 8u; i = i + 1u) {usr_tmp[i] = t9[i];}
         sub_mod(&t9, &t4, &usr_tmp); // t9 = t4-t9
       
         (*x1)[0] = t5[0];
@@ -1037,30 +1037,30 @@ export const shader = (nbr_thread: number) => {
           var t5 : array<u32, 8>;
           var t6 : array<u32, 8>;
       
-          mul_mod(&t4, &t1, &t1,0); // t4 = x^2
+          mul_mod(&t4, &t1, &t1,0u); // t4 = x^2
       
-          mul_mod(&t5, &t2, &t2,0); // t5 = y^2
+          mul_mod(&t5, &t2, &t2,0u); // t5 = y^2
       
           var tmp_usr : array<u32, 8>;
       
-          for (var i = 0u; i < 8; i = i + 1u) {tmp_usr[i] = t1[i];}
-          mul_mod(&t1, &tmp_usr, &t5,0); // t1 = x*y^2
+          for (var i = 0u; i < 8u; i = i + 1u) {tmp_usr[i] = t1[i];}
+          mul_mod(&t1, &tmp_usr, &t5,0u); // t1 = x*y^2
         
-          for (var i = 0u; i < 8; i = i + 1u) {tmp_usr[i] = t5[i];}
-          mul_mod(&t5, &tmp_usr, &tmp_usr,0); // t5 = t5^2 = y^4
+          for (var i = 0u; i < 8u; i = i + 1u) {tmp_usr[i] = t5[i];}
+          mul_mod(&t5, &tmp_usr, &tmp_usr,0u); // t5 = t5^2 = y^4
         
           // here the z^2 and z^4 is not needed for a = 0
-          for (var i = 0u; i < 8; i = i + 1u) {tmp_usr[i] = t3[i];}
-          mul_mod(&t3, &t2, &tmp_usr,0); // t3 = x * z
+          for (var i = 0u; i < 8u; i = i + 1u) {tmp_usr[i] = t3[i];}
+          mul_mod(&t3, &t2, &tmp_usr,0u); // t3 = x * z
       
           add_mod(&t2, &t4, &t4); // t2 = 2 * t4 = 2 * x^2
       
-          for (var i = 0u; i < 8; i = i + 1u) {tmp_usr[i] = t4[i];}
+          for (var i = 0u; i < 8u; i = i + 1u) {tmp_usr[i] = t4[i];}
           add_mod(&t4, &tmp_usr, &t2); // t4 = 3 * t4 = 3 * x^2
       
           var c:u32 = 0u;
       
-          if ((t4[0] & 1) != 0)
+          if ((t4[0] & 1u) != 0u)
           {
             var t:array<u32, 8> ;
         
@@ -1073,35 +1073,35 @@ export const shader = (nbr_thread: number) => {
             t[6] = 0xffffffffu;
             t[7] = 0xffffffffu;
         
-            var t4_tmp: array<u32, 8>;for (var i = 0u; i < 8; i = i + 1u) {t4_tmp[i] = t4[i];}
+            var t4_tmp: array<u32, 8>;for (var i = 0u; i < 8u; i = i + 1u) {t4_tmp[i] = t4[i];}
             c = add(&t4, &t4_tmp, &t); // t4 + SECP256K1_P
           }
         
           // right shift (t4 / 2):
         
-          t4[0] = (t4[0] >> 1) | (t4[1] << 31);
-          t4[1] = (t4[1] >> 1) | (t4[2] << 31);
-          t4[2] = (t4[2] >> 1) | (t4[3] << 31);
-          t4[3] = (t4[3] >> 1) | (t4[4] << 31);
-          t4[4] = (t4[4] >> 1) | (t4[5] << 31);
-          t4[5] = (t4[5] >> 1) | (t4[6] << 31);
-          t4[6] = (t4[6] >> 1) | (t4[7] << 31);
-          t4[7] = (t4[7] >> 1) | (c     << 31);
+          t4[0] = (t4[0] >> 1u) | (t4[1] << 31u);
+          t4[1] = (t4[1] >> 1u) | (t4[2] << 31u);
+          t4[2] = (t4[2] >> 1u) | (t4[3] << 31u);
+          t4[3] = (t4[3] >> 1u) | (t4[4] << 31u);
+          t4[4] = (t4[4] >> 1u) | (t4[5] << 31u);
+          t4[5] = (t4[5] >> 1u) | (t4[6] << 31u);
+          t4[6] = (t4[6] >> 1u) | (t4[7] << 31u);
+          t4[7] = (t4[7] >> 1u) | (c     << 31u);
       
       
       
-          mul_mod(&t6, &t4, &t4,0); // t6 = t4^2 = (3/2 * x^2)^2
+          mul_mod(&t6, &t4, &t4,0u); // t6 = t4^2 = (3/2 * x^2)^2
       
           add_mod(&t2, &t1, &t1); // t2 = 2 * t1
         
-          for (var i = 0u; i < 8; i = i + 1u) {tmp_usr[i] = t6[i];}
+          for (var i = 0u; i < 8u; i = i + 1u) {tmp_usr[i] = t6[i];}
           sub_mod(&t6, &tmp_usr, &t2); // t6 = t6 - t2
           
-          for (var i = 0u; i < 8; i = i + 1u) {tmp_usr[i] = t1[i];}
+          for (var i = 0u; i < 8u; i = i + 1u) {tmp_usr[i] = t1[i];}
           sub_mod(&t1, &tmp_usr, &t6); // t1 = t1 - t6
         
-          for (var i = 0u; i < 8; i = i + 1u) {tmp_usr[i] = t4[i];}
-          mul_mod(&t4, &tmp_usr, &t1,0); // t4 = t4 * t1
+          for (var i = 0u; i < 8u; i = i + 1u) {tmp_usr[i] = t4[i];}
+          mul_mod(&t4, &tmp_usr, &t1,0u); // t4 = t4 * t1
         
           sub_mod(&t1, &t4, &t5); // t1 = t4 - t5
       
@@ -1151,9 +1151,9 @@ export const shader = (nbr_thread: number) => {
         n[8] = privateKey[0] + global_invocation_id;
         // n[8] = privateKey[0];
       
-        for (var i:u32 = 0u; i <= 256; i++)
+        for (var i:u32 = 0u; i <= 256u; i++)
         {
-          if ((n[8] & 1) != 0)
+          if ((n[8] & 1u) != 0u)
           {
             var diff : i32 = i32( n[8] & 0x0f); // n % 2^w == n & (2^w - 1)
       
