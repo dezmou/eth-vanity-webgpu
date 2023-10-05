@@ -19,7 +19,7 @@ function Item(p: { private: string, public: string }) {
         flexDirection: "column",
         justifyContent: "center",
       }}>
-        {p.public}
+        0x{p.public}
       </div>
       <div style={{
         width: "40rem",
@@ -56,6 +56,7 @@ function App() {
   const [total, setTotal] = useState<number>(0)
   const [perSecond, setPersecond] = useState<number>(0)
   const [found, setFound] = useState<any[]>([]);
+  const [notCompatible, setNotCompatible] = useState<boolean>(false)
 
   const filterText = (text: string) => {
     text = text.toLowerCase();
@@ -71,6 +72,34 @@ function App() {
 
   useEffect(() => {
     ; (async () => {
+
+      const isChromium = (window as any).chrome;
+      const winNav = window.navigator;
+      const vendorName = winNav.vendor;
+      const isOpera = typeof (window as any).opr !== "undefined";
+      const isIEedge = winNav.userAgent.indexOf("Edg") > -1;
+      const isIOSChrome = winNav.userAgent.match("CriOS");
+      if (isIOSChrome) {
+        // is Google Chrome on IOS
+      } else if (
+        isChromium !== null &&
+        typeof isChromium !== "undefined" &&
+        vendorName === "Google Inc." &&
+        isOpera === false &&
+        isIEedge === false
+      ) {
+        try {
+          const adapter = (await navigator.gpu.requestAdapter())!;
+          await adapter.requestDevice();
+        } catch (e) {
+          setNotCompatible(true)
+          return;
+        }
+      } else {
+        setNotCompatible(true)
+        return;
+      }
+
       gp.current = await gpu({
         onFound: (e: any) => {
           setFound(a => [...a, e])
@@ -137,12 +166,21 @@ function App() {
             <div>
               Choose a brief prefix and/or suffix, then click start. Your browser will generate multiple random addresses until one matches your criteria.
             </div>
-            <br/>
+            <br />
             <div>
               Vanity address generator has been there for a long time, this version unlock up to 20 time the speed of the CPU version like <a href="https://vanity-eth.tk">vanity-eth.tk</a> by using <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebGPU_API">WebGPU</a>
             </div>
           </div>
         </div>
+        {notCompatible && <>
+          <div style={{
+            marginTop: "2rem",
+            fontWeight: "bold",
+            color: "#de163d",
+          }}>
+            It look like your browser is not compatible with WebGPU. <br />This website work only on Chrome Desktop for the moment.
+          </div>
+        </>}
       </div>
       <div style={{
         display: 'grid',
@@ -150,6 +188,8 @@ function App() {
         alignItems: 'center',
         alignContent: 'center',
         width: '100vw',
+        opacity: notCompatible ? "0.3" : "1",
+        pointerEvents: notCompatible ? "none" : "initial",
       }}>
         <div style={{
           height: "5vh",

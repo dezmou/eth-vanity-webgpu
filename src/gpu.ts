@@ -153,7 +153,7 @@ export const gpu = async (
         for (let i = 0; i < 40; i++) {
             buf32[i + 2] = find.charCodeAt(i);
         }
-        device.queue.writeBuffer(gpuFind, 0, buf32, 0, 42);
+        device.queue.writeBuffer(gpuFind, 0, buf32, 0, 64);
 
 
         let i = -1;
