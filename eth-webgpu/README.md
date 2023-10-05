@@ -1,27 +1,15 @@
-# React + TypeScript + Vite
+# VANITY-ETH
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## GPU accelerated Ethereum vanity address generator using WebGPU compute shader
 
-Currently, two official plugins are available:
+### [Demo here](https://vanity-eth.modez.pro/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Choose a brief prefix and/or suffix, then click start. Your browser will generate multiple random addresses until one matches your criteria.
 
-## Expanding the ESLint configuration
+Vanity address generator has been there for a long time, this version unlock up to 20 time the speed of the CPU version like vanity-eth.tk by using WebGPU
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### Benchmark
 
-- Configure the top-level `parserOptions` property like this:
+Number of address generation per second with dedicated GPU and Mac M1 & M2 are between 120K/s and 400K/s
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+I am awaiting more tests for creating a detailed benchmark. 

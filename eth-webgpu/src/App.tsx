@@ -98,6 +98,47 @@ function App() {
   return (
     <>
       <div style={{
+        textAlign: "center",
+      }}>
+
+        <div style={{
+          width: "100vw",
+          display: "flex",
+          justifyContent: "center",
+          marginTop: "2rem",
+        }}>
+          <div style={{
+            border: "1px solid black",
+            width: "20rem",
+          }}>
+            <h1>VANITY-ETH</h1>
+          </div>
+
+        </div>
+        <div>
+          <h2>GPU accelerated Ethereum vanity address generator</h2>
+        </div>
+
+        <div style={{
+          display: "flex",
+          justifyContent: "center",
+          width: "100vw",
+          textAlign: "left",
+        }}>
+          <div style={{
+            width: "40rem",
+          }}>
+            <div>
+              Choose a brief prefix and/or suffix, then click start. Your browser will generate multiple random addresses until one matches your criteria.
+            </div>
+            <br/>
+            <div>
+              Vanity address generator has been there for a long time, this version unlock up to 20 time the speed of the CPU version like <a href="https://vanity-eth.tk">vanity-eth.tk</a> by using <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebGPU_API">WebGPU</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style={{
         display: 'grid',
         justifyContent: 'center',
         alignItems: 'center',
@@ -105,9 +146,8 @@ function App() {
         width: '100vw',
       }}>
         <div style={{
-          height: "20vh",
+          height: "5vh",
         }}>
-
         </div>
         <div style={{
           display: 'flex',
