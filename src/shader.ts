@@ -1492,55 +1492,57 @@ export const shader = (nbr_thread: number) => {
           }
           keccak_f_1600(&state);
       }
-      for (var z:u32 = 0u; z< 5; z++) {
-        for (var y:u32 = 0u; y< 5; y++) {
+      for (var z:u32 = 0u; z< 5u; z++) {
+        for (var y:u32 = 0u; y< 5u; y++) {
   
             var high:u32 = 0u;
             var low:u32 = 0u;
-            for (var i:u32 = 0u; i < 64; i++) {
+            for (var i:u32 = 0u; i < 64u; i++) {
                 var bit:u32;
-                if ((i % 2 == 0)){
-                  bit = (state[z][y][0] >> (i / 2)) & 1;
+                if ((i % 2u == 0u)){
+                  bit = (state[z][y][0] >> (i / 2u)) & 1u;
                 }else {
-                  bit = (state[z][y][1] >> ((i - 1) / 2)) & 1;
+                  bit = (state[z][y][1] >> ((i - 1u) / 2u)) & 1u;
                 }
-                if (i < 32){
-                    low = (low | (bit << i)) >> 0; // TODO: >>0 needed?
+                if (i < 32u){
+                    low = (low | (bit << i)) >> 0u; // TODO: >>0 needed?
                 } 
-                if (i >= 32){
-                    high = (high | (bit << (i - 32))) >> 0;
+                if (i >= 32u){
+                    high = (high | (bit << (i - 32u))) >> 0u;
                 } 
             }
   
-            state[z][y][0] = low >> 0;
-            state[z][y][1] = high >> 0;
+            state[z][y][0] = low >> 0u;
+            state[z][y][1] = high >> 0u;
         }
       }
   
       var i : u32 =0u ;
       var res : array<u32, 32>;
-      for (var z : u32  = 0u; z < 4; z++) {
-          for (var x : u32  = 0u; x < 2; x++) {
-              var tmp : u32  = ((state[z][0][x] & 0xFF) << 24) |
-                  ((state[z][0][x] & 0xFF00) << 8) |
-                  ((state[z][0][x] & 0xFF0000) >> 8) |
-                  ((state[z][0][x] & 0xFF000000u) >> 24);
-              for (var j : u32  = 0u; j < 4; j++) {
-                  res[i * 4 + j] = (tmp >> (24 - j * 8)) & 0xFF;
+      for (var z : u32  = 0u; z < 4u; z++) {
+          for (var x : u32  = 0u; x < 2u; x++) {
+              var tmp : u32  = ((state[z][0][x] & 0xFFu) << 24u) |
+                  ((state[z][0][x] & 0xFF00u) << 8u) |
+                  ((state[z][0][x] & 0xFF0000u) >> 8u) |
+                  ((state[z][0][x] & 0xFF000000u) >> 24u);
+              for (var j : u32  = 0u; j < 4u; j++) {
+                  res[i * 4u + j] = (tmp >> (24u - j * 8u)) & 0xFFu;
               }
-              i+= 1;
+              i+= 1u;
           }
       }
 
+      var druide = array<u32, 16>  (48u,49u,50u,51u,52u,53u,54u,55u,56u,57u,97u,98u,99u,100u,101u,102u);
+
       var res16 : array<u32, 40>;
-      for (var i : u32 = 0u; i < 20; i++) {
-          res16[i * 2] = base16[(res[i+12] >> 4) & 0xF];
-          res16[i * 2 + 1] = base16[res[i+12] & 0xF];
+      for (var i : u32 = 0u; i < 20u; i++) {
+        res16[i * 2u] = druide[(res[i + 12u] >> 4u) & 15u];
+          res16[i * 2u + 1u] = druide[res[i+12u] & 15u];
       }
       
       var valid : bool = true;
       for (var i:u32 = 0u; i < find[0];i++){
-        if (res16[i] == find[i + 2]){
+        if (res16[i] == find[i + 2u]){
 
         } else {
             valid = false;
@@ -1549,7 +1551,7 @@ export const shader = (nbr_thread: number) => {
       
       if (valid){
         for (var i:u32 = 0u; i<find[1];i++){
-          if (res16[39 - i] == find[39 - i + 2]){
+          if (res16[39u - i] == find[39u - i + 2u]){
             continue;
           }
           valid = false;
@@ -1557,9 +1559,9 @@ export const shader = (nbr_thread: number) => {
       }
 
     if (valid){
-        atomicStore(&result[0], glob[global_invocation_index].workerId + 1000);
-        for (var i:u32 = 0u; i< 40;i++){
-            atomicStore(&result[i+1], res16[i]);
+        atomicStore(&result[0], glob[global_invocation_index].workerId + 1000u);
+        for (var i:u32 = 0u; i< 40u;i++){
+            atomicStore(&result[i+1u], res16[i]);
         }
       }
     }
