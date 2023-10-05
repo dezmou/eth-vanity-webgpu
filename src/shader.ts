@@ -23,16 +23,28 @@ export const shader = (nbr_thread: number) => {
       
       const BASE_POINTS = array<u32, 96> ( 0x16f81798u, 0x59f2815bu, 0x2dce28d9u, 0x029bfcdbu, 0xce870b07u, 0x55a06295u, 0xf9dcbbacu, 0x79be667eu, 0xfb10d4b8u, 0x9c47d08fu, 0xa6855419u, 0xfd17b448u, 0x0e1108a8u, 0x5da4fbfcu, 0x26a3c465u, 0x483ada77u, 0x04ef2777u, 0x63b82f6fu, 0x597aabe6u, 0x02e84bb7u, 0xf1eef757u, 0xa25b0403u, 0xd95c3b9au, 0xb7c52588u, 0xbce036f9u, 0x8601f113u, 0x836f99b0u, 0xb531c845u, 0xf89d5229u, 0x49344f85u, 0x9258c310u, 0xf9308a01u, 0x84b8e672u, 0x6cb9fd75u, 0x34c2231bu, 0x6500a999u, 0x2a37f356u, 0x0fe337e6u, 0x632de814u, 0x388f7b0fu, 0x7b4715bdu, 0x93460289u, 0xcb3ddce4u, 0x9aff5666u, 0xd5c80ca9u, 0xf01cc819u, 0x9cd217ebu, 0xc77084f0u, 0xb240efe4u, 0xcba8d569u, 0xdc619ab7u, 0xe88b84bdu, 0x0a5c5128u, 0x55b4a725u, 0x1a072093u, 0x2f8bde4du, 0xa6ac62d6u, 0xdca87d3au, 0xab0d6840u, 0xf788271bu, 0xa6c9c426u, 0xd4dba9ddu, 0x36e5e3d6u, 0xd8ac2226u, 0x59539959u, 0x235782c4u, 0x54f297bfu, 0x0877d8e4u, 0x59363bd9u, 0x2b245622u, 0xc91a1c29u, 0x2753ddd9u, 0xcac4f9bcu, 0xe92bddedu, 0x0330e39cu, 0x3d419b7eu, 0xf2ea7a0eu, 0xa398f365u, 0x6e5db4eau, 0x5cbdf064u, 0x087264dau, 0xa5082628u, 0x13fde7b5u, 0xa813d0b8u, 0x861a54dbu, 0xa3178d6du, 0xba255960u, 0x6aebca40u, 0xf78d9755u, 0x5af7d9d6u, 0xec02184au, 0x57ec2f47u, 0x79e5ab24u, 0x5ce87292u, 0x45daa69fu, 0x951435bfu);
   
-      const RC = array<array<u32, 2>, 24> (
-        array<u32, 2>(0x00000001u, 0x00000000u), array<u32, 2>(0x00000000u, 0x00000089u), array<u32, 2>(0x00000000u, 0x8000008Bu),
-        array<u32, 2>(0x00000000u, 0x80008080u), array<u32, 2>(0x00000001u, 0x0000008Bu), array<u32, 2>(0x00000001u, 0x00008000u),
-        array<u32, 2>(0x00000001u, 0x80008088u), array<u32, 2>(0x00000001u, 0x80000082u), array<u32, 2>(0x00000000u, 0x0000000Bu),
-        array<u32, 2>(0x00000000u, 0x0000000Au), array<u32, 2>(0x00000001u, 0x00008082u), array<u32, 2>(0x00000000u, 0x00008003u),
-        array<u32, 2>(0x00000001u, 0x0000808Bu), array<u32, 2>(0x00000001u, 0x8000000Bu), array<u32, 2>(0x00000001u, 0x8000008Au),
-        array<u32, 2>(0x00000001u, 0x80000081u), array<u32, 2>(0x00000000u, 0x80000081u), array<u32, 2>(0x00000000u, 0x80000008u),
-        array<u32, 2>(0x00000000u, 0x00000083u), array<u32, 2>(0x00000000u, 0x80008003u), array<u32, 2>(0x00000001u, 0x80008088u),
-        array<u32, 2>(0x00000000u, 0x80000088u), array<u32, 2>(0x00000001u, 0x00008000u), array<u32, 2>(0x00000000u, 0x80008082u),
+      const RC1 = array (
+        0x00000001u, 0x00000000u, 0x00000000u,
+        0x00000000u, 0x00000001u, 0x00000001u,
+        0x00000001u, 0x00000001u, 0x00000000u,
+        0x00000000u, 0x00000001u, 0x00000000u,
+        0x00000001u, 0x00000001u, 0x00000001u,
+        0x00000001u, 0x00000000u, 0x00000000u,
+        0x00000000u, 0x00000000u, 0x00000001u,
+        0x00000000u, 0x00000001u, 0x00000000u,
       );
+
+      const RC2 = array (
+         0x00000000u,  0x00000089u,  0x8000008Bu,
+         0x80008080u,  0x0000008Bu,  0x00008000u,
+         0x80008088u,  0x80000082u,  0x0000000Bu,
+         0x0000000Au,  0x00008082u,  0x00008003u,
+         0x0000808Bu,  0x8000000Bu,  0x8000008Au,
+         0x80000081u,  0x80000081u,  0x80000008u,
+         0x00000083u,  0x80008003u,  0x80008088u,
+         0x80000088u,  0x00008000u,  0x80008082u,
+      );
+
   
     const base16 = array<u32, 16> (48u,49u,50u,51u,52u,53u,54u,55u,56u,57u,97u,98u,99u,100u,101u,102u);
 
@@ -1248,9 +1260,7 @@ export const shader = (nbr_thread: number) => {
     
   
       fn keccak_f_1600(a : ptr<function, array<array<array<u32,2>,5>, 5>>){
-        var nRounds : u32 = 24u; 
-        
-        for (var r : u32 = 0u; r < nRounds; r++) {
+        for (var r : u32 = 0u; r < 24u; r++) {
           
           var C : array<array<u32, 2>,5> ;
           var D : array<array<u32, 2>,5> ;
@@ -1309,8 +1319,8 @@ export const shader = (nbr_thread: number) => {
                   (*a)[x][y][1] = C[x][1];
               }
           }
-          (*a)[0][0][0] = ((*a)[0][0][0] ^ RC[r][0]) >> 0u;
-          (*a)[0][0][1] = ((*a)[0][0][1] ^ RC[r][1]) >> 0u;
+          (*a)[0][0][0] = ((*a)[0][0][0] ^ RC1[r]) >> 0u;
+          (*a)[0][0][1] = ((*a)[0][0][1] ^ RC2[r]) >> 0u;
         }
       }
   
