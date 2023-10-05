@@ -249,7 +249,7 @@ export const gpu = async (
             }
             if (running) {
                 param.onStats({
-                    nbrAddressGenerated: i * NB_THREAD * NB_ITER,
+                    nbrAddressGenerated: (i + 1) * NB_THREAD * NB_ITER,
                     perSecond: Math.floor((1000 / (performance.now() - now)) * NB_THREAD * NB_ITER),
                 })
             }

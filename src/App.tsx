@@ -56,7 +56,8 @@ function App() {
   const [total, setTotal] = useState<number>(0)
   const [perSecond, setPersecond] = useState<number>(0)
   const [found, setFound] = useState<any[]>([]);
-  const [notCompatible, setNotCompatible] = useState<boolean>(false)
+  // const [notCompatible, setNotCompatible] = useState<boolean>(false)
+  const [notCompatible] = useState<boolean>(false)
 
   const filterText = (text: string) => {
     text = text.toLowerCase();
