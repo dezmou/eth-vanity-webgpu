@@ -255,7 +255,7 @@ function App() {
                 height: "100px",
               }}>
                 <div>
-                  {total.toLocaleString("us")} address
+                  {total.toLocaleString("us")} addresses
                 </div>
                 <div>
                   {perSecond.toLocaleString("us")} per second

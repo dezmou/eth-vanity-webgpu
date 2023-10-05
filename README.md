@@ -16,5 +16,5 @@ Vanity address generator has been there for a long time, this version unlocks up
 | Hardware              | WebGPU |  vanity-eth.tk - CPU |
 | :---------------- | :------: | ----: |
 | Mac M1        |   135 000 / s   | 16 000 / s |
-| Mac M1 Pro Max        |   350 000 / s   | 17 000 / s |
-| Intel i9-12900K - RTX 3070         |   400 000 / s   | 30 000 / s |
+| Mac M1 Pro Max        |   290 000 / s   | 17 000 / s |
+| Intel i9-12900K - RTX 3070         |   310 000 / s   | 30 000 / s |
