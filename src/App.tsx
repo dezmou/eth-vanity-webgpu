@@ -86,11 +86,6 @@ function App() {
           console.log(e);
         }
       })
-      // gp.current.run("aaaaaa", "bbb")
-      // setTimeout(async () => {
-      //   await gp.current.stop()
-      //   gp.current.run("aa", "bbb")
-      // }, 5000)
     })()
   }, [])
 
@@ -115,11 +110,22 @@ function App() {
           </div>
 
         </div>
-        <div>
+        <div style={{
+          marginTop: "3rem",
+        }}>
           <h2>GPU accelerated Ethereum vanity address generator</h2>
         </div>
 
         <div style={{
+          marginTop: "2rem",
+        }}>
+          <h3>
+            <a href="https://github.com/dezmou/eth-vanity-webgpu">Source code on Github</a>
+          </h3>
+        </div>
+
+        <div style={{
+          marginTop: "2rem",
           display: "flex",
           justifyContent: "center",
           width: "100vw",
