@@ -1140,7 +1140,7 @@ export const shader = (nbr_thread: number) => {
       
         var n : array<u32, 9> ;
       
-        n[0] =    0; 
+        n[0] =    0u; 
         n[1] = privateKey[7];
         n[2] = privateKey[6];
         n[3] = privateKey[5];
@@ -1155,7 +1155,7 @@ export const shader = (nbr_thread: number) => {
         {
           if ((n[8] & 1u) != 0u)
           {
-            var diff : i32 = i32( n[8] & 0x0f); // n % 2^w == n & (2^w - 1)
+            var diff : i32 = i32( n[8] & 0x0fu); // n % 2^w == n & (2^w - 1)
       
             var val : i32 = diff;
       
@@ -1166,7 +1166,7 @@ export const shader = (nbr_thread: number) => {
               val = 0x11 - val;
             }
       
-            (*naf)[i >> 3] = (*naf)[i >> 3] | u32(val << ((i & 7) << 2));
+            (*naf)[i >> 3u] = (*naf)[i >> 3u] | u32(val << ((i & 7u) << 2u));
       
             var  t:u32 = n[8]; // t is the (temporary) old/unmodified value
       
@@ -1180,7 +1180,7 @@ export const shader = (nbr_thread: number) => {
             {
               while (n[k] > t) // overflow propagation
               {
-                if (k == 0){break;} ; // needed ?
+                if (k == 0u){break;} ; // needed ?
       
                 k--;
       
@@ -1193,7 +1193,7 @@ export const shader = (nbr_thread: number) => {
             {
               while (t > n[k]) // overflow propagation
               {
-                if (k == 0) {break;};
+                if (k == 0u) {break;};
       
                 k--;
       
@@ -1208,39 +1208,39 @@ export const shader = (nbr_thread: number) => {
             loop_start = i;
           }
       
-          n[8] = (n[8] >> 1) | (n[7] << 31);
-          n[7] = (n[7] >> 1) | (n[6] << 31);
-          n[6] = (n[6] >> 1) | (n[5] << 31);
-          n[5] = (n[5] >> 1) | (n[4] << 31);
-          n[4] = (n[4] >> 1) | (n[3] << 31);
-          n[3] = (n[3] >> 1) | (n[2] << 31);
-          n[2] = (n[2] >> 1) | (n[1] << 31);
-          n[1] = (n[1] >> 1) | (n[0] << 31);
-          n[0] = n[0] >> 1;
+          n[8] = (n[8] >> 1u) | (n[7] << 31u);
+          n[7] = (n[7] >> 1u) | (n[6] << 31u);
+          n[6] = (n[6] >> 1u) | (n[5] << 31u);
+          n[5] = (n[5] >> 1u) | (n[4] << 31u);
+          n[4] = (n[4] >> 1u) | (n[3] << 31u);
+          n[3] = (n[3] >> 1u) | (n[2] << 31u);
+          n[2] = (n[2] >> 1u) | (n[1] << 31u);
+          n[1] = (n[1] >> 1u) | (n[0] << 31u);
+          n[0] = n[0] >> 1u;
         }
         return loop_start;
       }
       
       fn ROT(r : ptr<function, array<u32, 2>>,a : ptr<function, array<u32, 2>>,d : u32) { 
-          if (d == 0){
+          if (d == 0u){
               (*r)[0] = (*a)[0];
               (*r)[1] = (*a)[1];
               return;
           }
-          if (d == 1){
-              (*r)[0] = (((*a)[1] << 1) ^ ((*a)[1] >> 31)) >> 0;
-              (*r)[1] = (*a)[0] >> 0;
+          if (d == 1u){
+              (*r)[0] = (((*a)[1] << 1u) ^ ((*a)[1] >> 31u)) >> 0u;
+              (*r)[1] = (*a)[0] >> 0u;
               return;
           } 
           var even : u32;
           var odd : u32;
       
-          if (d % 2 == 0) {
-            even = ((((*a)[0] << (d / 2))) ^ ((((*a)[0] >> (32 - (d / 2)))) >> 0));
-            odd = ((((*a)[1] << (d / 2))) ^ ((((*a)[1] >> (32 - (d / 2)))) >> 0));
+          if (d % 2 == 0u) {
+            even = ((((*a)[0] << (d / 2u))) ^ ((((*a)[0] >> (32u - (d / 2u)))) >> 0u));
+            odd = ((((*a)[1] << (d / 2u))) ^ ((((*a)[1] >> (32u - (d / 2u)))) >> 0u));
           } else {
-            even = (((*a)[1] << ((d + 1) / 2)) ^ ((*a)[1] >> (32 - (d + 1) / 2))) >> 0;
-            odd = (((*a)[0] << ((d - 1) / 2)) ^ ((*a)[0] >> (32 - (d - 1) / 2))) >> 0;
+            even = (((*a)[1] << ((d + 1u) / 2u)) ^ ((*a)[1] >> (32u - (d + 1u) / 2u))) >> 0u;
+            odd = (((*a)[0] << ((d - 1u) / 2u)) ^ ((*a)[0] >> (32u - (d - 1u) / 2u))) >> 0u;
           }
           (*r)[0] = even;
           (*r)[1] = odd;
