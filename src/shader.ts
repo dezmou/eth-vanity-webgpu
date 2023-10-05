@@ -524,12 +524,12 @@ export const shader = (nbr_thread: number) => {
                    var b_ij : u32 = (*b)[i - j];
          
                    // Multiply (*a)[j] and (*b)[i - j]
-                   var low_part : u32 = (a_j & 0xFFFF) * (b_ij & 0xFFFF);
-                   var high_part : u32 = (a_j >> 16) * (b_ij >> 16);
+                   var low_part : u32 = (a_j & 0xFFFFu) * (b_ij & 0xFFFFu);
+                   var high_part : u32 = (a_j >> 16u) * (b_ij >> 16u);
          
                    // Middle part contributions
-                   var middle1 : u32 = (a_j & 0xFFFF) * (b_ij >> 16);
-                   var middle2 : u32 = (a_j >> 16) * (b_ij & 0xFFFF);
+                   var middle1 : u32 = (a_j & 0xFFFFu) * (b_ij >> 16u);
+                   var middle2 : u32 = (a_j >> 16u) * (b_ij & 0xFFFFu);
          
                    // Combine all contributions
                    var sum_low : u32 = t0 + low_part;
@@ -538,18 +538,18 @@ export const shader = (nbr_thread: number) => {
                    var carry_out : u32; if ((sum_high < t1)){carry_out = 1;}else{carry_out = 0;};
          
                    // Add middle contributions, taking care of carry
-                   var sum_middle : u32 = sum_low + (middle1 << 16);
-                  if (sum_middle < sum_low){carry_in = 1;}else{carry_in = 0;}
+                   var sum_middle : u32 = sum_low + (middle1 << 16u);
+                  if (sum_middle < sum_low){carry_in = 1u;}else{carry_in = 0u;}
                    sum_low = sum_middle;
-                   sum_middle = sum_high + (middle1 >> 16) + carry_in;
-                   if ((sum_middle < sum_high)){carry_out += 1;}
+                   sum_middle = sum_high + (middle1 >> 16u) + carry_in;
+                   if ((sum_middle < sum_high)){carry_out += 1u;}
                    sum_high = sum_middle;
          
-                   sum_middle = sum_low + (middle2 << 16);
-                   if ((sum_middle < sum_low)){carry_in = 1;}else{carry_in = 0;}
+                   sum_middle = sum_low + (middle2 << 16u);
+                   if ((sum_middle < sum_low)){carry_in = 1u;}else{carry_in = 0u;}
                    sum_low = sum_middle;
-                   sum_middle = sum_high + (middle2 >> 16) + carry_in;
-                   if ((sum_middle < sum_high)){carry_out += 1;}
+                   sum_middle = sum_high + (middle2 >> 16u) + carry_in;
+                   if ((sum_middle < sum_high)){carry_out += 1u;}
                    sum_high = sum_middle;
          
                    // Set t0, t1 and carry
@@ -576,12 +576,12 @@ export const shader = (nbr_thread: number) => {
                    var b_ij: u32 = (*b)[i - j];
          
                    // Multiply (*a)[j] and (*b)[i - j]
-                   var low_part: u32 = (a_j & 0xFFFF) * (b_ij & 0xFFFF);
+                   var low_part: u32 = (a_j & 0xFFFFu) * (b_ij & 0xFFFFu);
                    var high_part: u32 = (a_j >> 16) * (b_ij >> 16);
          
                    // Middle part contributions
-                   var middle1: u32 = (a_j & 0xFFFF) * (b_ij >> 16);
-                   var middle2: u32 = (a_j >> 16) * (b_ij & 0xFFFF);
+                   var middle1: u32 = (a_j & 0xFFFFu) * (b_ij >> 16);
+                   var middle2: u32 = (a_j >> 16) * (b_ij & 0xFFFFu);
          
                    // Combine all contributions
                    var sum_low: u32 = t0 + low_part;
