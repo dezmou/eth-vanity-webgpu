@@ -30,12 +30,16 @@ function Item(p: { private: string, public: string }) {
         {show && <>
           {p.private}
         </>}
-        {!show && <>
-          <Button variant="contained" color="warning" onClick={() => {
+        {!show && <><div style={{
+          display: "flex",
+          justifyContent: "center",
+        }}>
+          <Button style={{ width: "25rem" }} variant="contained" color="warning" onClick={() => {
             setShow(true)
           }}>
             Click to Reveal private key
           </Button>
+        </div>
         </>}
 
       </div>
@@ -99,7 +103,6 @@ function App() {
         alignItems: 'center',
         alignContent: 'center',
         width: '100vw',
-
       }}>
         <div style={{
           height: "20vh",
@@ -111,10 +114,12 @@ function App() {
           flexDirection: 'column',
           gap: '1rem',
           width: "300px",
+          padding: "3rem",
+          background: "#f4f4f4",
 
         }}>
-          <TextField type='text' onInput={(e) => setPrefix(filterText((e.target as any).value))} value={prefix} label="Prefix" variant="outlined" />
-          <TextField type="text" onInput={(e) => setSuffix(filterText((e.target as any).value))} value={suffix} label="Suffix" variant="outlined" />
+          <TextField type='text' style={{ background: "white" }} onInput={(e) => setPrefix(filterText((e.target as any).value))} value={prefix} label="Prefix" variant="outlined" />
+          <TextField type="text" style={{ background: "white" }} onInput={(e) => setSuffix(filterText((e.target as any).value))} value={suffix} label="Suffix" variant="outlined" />
           <Button disabled={state === "running" || state === "compiling"} variant="contained" color="primary" onClick={() => {
             if (state === "new") {
               setState("compiling")

@@ -3,7 +3,7 @@ import { shader } from "./shader";
 
 declare const Base58: any;
 
-const NB_ITER = 512;
+const NB_ITER = 768;
 const NB_THREAD = 64;
 
 function uint32ArrayToHexString(arr: number[]) {
