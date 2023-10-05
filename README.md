@@ -27,4 +27,4 @@ const NB_ITER = 1024;
 const NB_THREAD = 256;
 ```
 
-Then you can reach 400 000 / s, but the tradeoff is that it crash on hardwares with integrated chipset GPU.
+Then you can reach 400 000 / s, but the tradeoff is that it may crash on hardwares with integrated chipset GPU.
