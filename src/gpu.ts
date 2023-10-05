@@ -35,7 +35,7 @@ export const gpu = async (
     });
 
     const gpuFind = device.createBuffer({
-        size: 168,
+        size: Uint32Array.BYTES_PER_ELEMENT * 64,
         usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
     });
 
@@ -150,13 +150,13 @@ export const gpu = async (
         let find = prefix;
         find += Array.from({ length: 40 - prefix.length - suffix.length }).map(() => "0").join("");
         find += suffix;
-        const buf32 = new Uint32Array({ length: 42 });
+        const buf32 = new Uint32Array({ length: 64 });
         buf32[0] = prefix.length;
         buf32[1] = suffix.length;
         for (let i = 0; i < 40; i++) {
             buf32[i + 2] = find.charCodeAt(i);
         }
-        device.queue.writeBuffer(gpuFind, 0, buf32, 0, 42);
+        device.queue.writeBuffer(gpuFind, 0, buf32, 0, 64);
 
 
         let i = -1;

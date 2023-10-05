@@ -21,17 +21,17 @@ export const shader = (nbr_thread: number) => {
       @group(0) @binding(3) var<storage, read> find : array<u32>;
   
       
-      const BASE_POINTS = array<u32, 96> ( 0x16f81798, 0x59f2815b, 0x2dce28d9, 0x029bfcdb, 0xce870b07, 0x55a06295, 0xf9dcbbac, 0x79be667e, 0xfb10d4b8, 0x9c47d08f, 0xa6855419, 0xfd17b448, 0x0e1108a8, 0x5da4fbfc, 0x26a3c465, 0x483ada77, 0x04ef2777, 0x63b82f6f, 0x597aabe6, 0x02e84bb7, 0xf1eef757, 0xa25b0403, 0xd95c3b9a, 0xb7c52588, 0xbce036f9, 0x8601f113, 0x836f99b0, 0xb531c845, 0xf89d5229, 0x49344f85, 0x9258c310, 0xf9308a01, 0x84b8e672, 0x6cb9fd75, 0x34c2231b, 0x6500a999, 0x2a37f356, 0x0fe337e6, 0x632de814, 0x388f7b0f, 0x7b4715bd, 0x93460289, 0xcb3ddce4, 0x9aff5666, 0xd5c80ca9, 0xf01cc819, 0x9cd217eb, 0xc77084f0, 0xb240efe4, 0xcba8d569, 0xdc619ab7, 0xe88b84bd, 0x0a5c5128, 0x55b4a725, 0x1a072093, 0x2f8bde4d, 0xa6ac62d6, 0xdca87d3a, 0xab0d6840, 0xf788271b, 0xa6c9c426, 0xd4dba9dd, 0x36e5e3d6, 0xd8ac2226, 0x59539959, 0x235782c4, 0x54f297bf, 0x0877d8e4, 0x59363bd9, 0x2b245622, 0xc91a1c29, 0x2753ddd9, 0xcac4f9bc, 0xe92bdded, 0x0330e39c, 0x3d419b7e, 0xf2ea7a0e, 0xa398f365, 0x6e5db4ea, 0x5cbdf064, 0x087264da, 0xa5082628, 0x13fde7b5, 0xa813d0b8, 0x861a54db, 0xa3178d6d, 0xba255960, 0x6aebca40, 0xf78d9755, 0x5af7d9d6, 0xec02184a, 0x57ec2f47, 0x79e5ab24, 0x5ce87292, 0x45daa69f, 0x951435bf);
+      const BASE_POINTS = array<u32, 96> ( 0x16f81798u, 0x59f2815bu, 0x2dce28d9u, 0x029bfcdbu, 0xce870b07u, 0x55a06295u, 0xf9dcbbacu, 0x79be667eu, 0xfb10d4b8u, 0x9c47d08fu, 0xa6855419u, 0xfd17b448u, 0x0e1108a8u, 0x5da4fbfcu, 0x26a3c465u, 0x483ada77u, 0x04ef2777u, 0x63b82f6fu, 0x597aabe6u, 0x02e84bb7u, 0xf1eef757u, 0xa25b0403u, 0xd95c3b9au, 0xb7c52588u, 0xbce036f9u, 0x8601f113u, 0x836f99b0u, 0xb531c845u, 0xf89d5229u, 0x49344f85u, 0x9258c310u, 0xf9308a01u, 0x84b8e672u, 0x6cb9fd75u, 0x34c2231bu, 0x6500a999u, 0x2a37f356u, 0x0fe337e6u, 0x632de814u, 0x388f7b0fu, 0x7b4715bdu, 0x93460289u, 0xcb3ddce4u, 0x9aff5666u, 0xd5c80ca9u, 0xf01cc819u, 0x9cd217ebu, 0xc77084f0u, 0xb240efe4u, 0xcba8d569u, 0xdc619ab7u, 0xe88b84bdu, 0x0a5c5128u, 0x55b4a725u, 0x1a072093u, 0x2f8bde4du, 0xa6ac62d6u, 0xdca87d3au, 0xab0d6840u, 0xf788271bu, 0xa6c9c426u, 0xd4dba9ddu, 0x36e5e3d6u, 0xd8ac2226u, 0x59539959u, 0x235782c4u, 0x54f297bfu, 0x0877d8e4u, 0x59363bd9u, 0x2b245622u, 0xc91a1c29u, 0x2753ddd9u, 0xcac4f9bcu, 0xe92bddedu, 0x0330e39cu, 0x3d419b7eu, 0xf2ea7a0eu, 0xa398f365u, 0x6e5db4eau, 0x5cbdf064u, 0x087264dau, 0xa5082628u, 0x13fde7b5u, 0xa813d0b8u, 0x861a54dbu, 0xa3178d6du, 0xba255960u, 0x6aebca40u, 0xf78d9755u, 0x5af7d9d6u, 0xec02184au, 0x57ec2f47u, 0x79e5ab24u, 0x5ce87292u, 0x45daa69fu, 0x951435bfu);
   
       const RC = array<array<u32, 2>, 24> (
-        array<u32, 2>(0x00000001, 0x00000000), array<u32, 2>(0x00000000, 0x00000089), array<u32, 2>(0x00000000, 0x8000008B),
-        array<u32, 2>(0x00000000, 0x80008080), array<u32, 2>(0x00000001, 0x0000008B), array<u32, 2>(0x00000001, 0x00008000),
-        array<u32, 2>(0x00000001, 0x80008088), array<u32, 2>(0x00000001, 0x80000082), array<u32, 2>(0x00000000, 0x0000000B),
-        array<u32, 2>(0x00000000, 0x0000000A), array<u32, 2>(0x00000001, 0x00008082), array<u32, 2>(0x00000000, 0x00008003),
-        array<u32, 2>(0x00000001, 0x0000808B), array<u32, 2>(0x00000001, 0x8000000B), array<u32, 2>(0x00000001, 0x8000008A),
-        array<u32, 2>(0x00000001, 0x80000081), array<u32, 2>(0x00000000, 0x80000081), array<u32, 2>(0x00000000, 0x80000008),
-        array<u32, 2>(0x00000000, 0x00000083), array<u32, 2>(0x00000000, 0x80008003), array<u32, 2>(0x00000001, 0x80008088),
-        array<u32, 2>(0x00000000, 0x80000088), array<u32, 2>(0x00000001, 0x00008000), array<u32, 2>(0x00000000, 0x80008082),
+        array<u32, 2>(0x00000001u, 0x00000000u), array<u32, 2>(0x00000000u, 0x00000089u), array<u32, 2>(0x00000000u, 0x8000008Bu),
+        array<u32, 2>(0x00000000u, 0x80008080u), array<u32, 2>(0x00000001u, 0x0000008Bu), array<u32, 2>(0x00000001u, 0x00008000u),
+        array<u32, 2>(0x00000001u, 0x80008088u), array<u32, 2>(0x00000001u, 0x80000082u), array<u32, 2>(0x00000000u, 0x0000000Bu),
+        array<u32, 2>(0x00000000u, 0x0000000Au), array<u32, 2>(0x00000001u, 0x00008082u), array<u32, 2>(0x00000000u, 0x00008003u),
+        array<u32, 2>(0x00000001u, 0x0000808Bu), array<u32, 2>(0x00000001u, 0x8000000Bu), array<u32, 2>(0x00000001u, 0x8000008Au),
+        array<u32, 2>(0x00000001u, 0x80000081u), array<u32, 2>(0x00000000u, 0x80000081u), array<u32, 2>(0x00000000u, 0x80000008u),
+        array<u32, 2>(0x00000000u, 0x00000083u), array<u32, 2>(0x00000000u, 0x80008003u), array<u32, 2>(0x00000001u, 0x80008088u),
+        array<u32, 2>(0x00000000u, 0x80000088u), array<u32, 2>(0x00000001u, 0x00008000u), array<u32, 2>(0x00000000u, 0x80008082u),
       );
   
     const base16 = array<u32, 16> (48,49,50,51,52,53,54,55,56,57,97,98,99,100,101,102);
@@ -63,29 +63,29 @@ export const shader = (nbr_thread: number) => {
   
     var  p : array<u32, 8>;
   
-    p[0] = 0xfffffc2f;
-    p[1] = 0xfffffffe;
-    p[2] = 0xffffffff;
-    p[3] = 0xffffffff;
-    p[4] = 0xffffffff;
-    p[5] = 0xffffffff;
-    p[6] = 0xffffffff;
-    p[7] = 0xffffffff;
+    p[0] = 0xfffffc2fu;
+    p[1] = 0xfffffffeu;
+    p[2] = 0xffffffffu;
+    p[3] = 0xffffffffu;
+    p[4] = 0xffffffffu;
+    p[5] = 0xffffffffu;
+    p[6] = 0xffffffffu;
+    p[7] = 0xffffffffu;
   
     var  t1 : array<u32, 8>;
   
-    t1[0] = 0xfffffc2f;
-    t1[1] = 0xfffffffe;
-    t1[2] = 0xffffffff;
-    t1[3] = 0xffffffff;
-    t1[4] = 0xffffffff;
-    t1[5] = 0xffffffff;
-    t1[6] = 0xffffffff;
-    t1[7] = 0xffffffff;
+    t1[0] = 0xfffffc2fu;
+    t1[1] = 0xfffffffeu;
+    t1[2] = 0xffffffffu;
+    t1[3] = 0xffffffffu;
+    t1[4] = 0xffffffffu;
+    t1[5] = 0xffffffffu;
+    t1[6] = 0xffffffffu;
+    t1[7] = 0xffffffffu;
   
     var t2 : array<u32, 8>;
   
-    t2[0] = 0x00000001;
+    t2[0] = 0x00000001u;
   
     var t3 : array<u32, 8>;
   
@@ -431,14 +431,14 @@ export const shader = (nbr_thread: number) => {
         {
           var t : array<u32,8>;
       
-          t[0] = 0xfffffc2f;
-          t[1] = 0xfffffffe;
-          t[2] = 0xffffffff;
-          t[3] = 0xffffffff;
-          t[4] = 0xffffffff;
-          t[5] = 0xffffffff;
-          t[6] = 0xffffffff;
-          t[7] = 0xffffffff;
+          t[0] = 0xfffffc2fu;
+          t[1] = 0xfffffffeu;
+          t[2] = 0xffffffffu;
+          t[3] = 0xffffffffu;
+          t[4] = 0xffffffffu;
+          t[5] = 0xffffffffu;
+          t[6] = 0xffffffffu;
+          t[7] = 0xffffffffu;
       
           var r_tmp : array<u32, 8>;for (var i = 0u; i < 8; i = i + 1u) {r_tmp[i] = (*r)[i];}
           add(r, &r_tmp, &t);
@@ -474,14 +474,14 @@ export const shader = (nbr_thread: number) => {
         var c : u32  = add(r, a, b); // carry
         var t: array<u32, 8>;
       
-        t[0] = 0xfffffc2f;
-        t[1] = 0xfffffffe;
-        t[2] = 0xffffffff;
-        t[3] = 0xffffffff;
-        t[4] = 0xffffffff;
-        t[5] = 0xffffffff;
-        t[6] = 0xffffffff;
-        t[7] = 0xffffffff;
+        t[0] = 0xfffffc2fu;
+        t[1] = 0xfffffffeu;
+        t[2] = 0xffffffffu;
+        t[3] = 0xffffffffu;
+        t[4] = 0xffffffffu;
+        t[5] = 0xffffffffu;
+        t[6] = 0xffffffffu;
+        t[7] = 0xffffffffu;
       
         var modd:u32 = 1;
       
@@ -799,14 +799,14 @@ export const shader = (nbr_thread: number) => {
       
           c += c2;
       
-          t[0] = 0xfffffc2f;
-          t[1] = 0xfffffffe;
-          t[2] = 0xffffffff;
-          t[3] = 0xffffffff;
-          t[4] = 0xffffffff;
-          t[5] = 0xffffffff;
-          t[6] = 0xffffffff;
-          t[7] = 0xffffffff;
+          t[0] = 0xfffffc2fu;
+          t[1] = 0xfffffffeu;
+          t[2] = 0xffffffffu;
+          t[3] = 0xffffffffu;
+          t[4] = 0xffffffffu;
+          t[5] = 0xffffffffu;
+          t[6] = 0xffffffffu;
+          t[7] = 0xffffffffu;
         
           for (var i:u32 = c; i > 0; i--)
           {
@@ -936,7 +936,7 @@ export const shader = (nbr_thread: number) => {
       
         // don't discard the most significant bit, it's important too!
       
-        if ((t4[7] & 0x80000000) != 0)
+        if ((t4[7] & 0x80000000u) != 0)
         {
           // use most significant bit and perform mod P, since we have: t4 * 2 % P
       
@@ -1064,14 +1064,14 @@ export const shader = (nbr_thread: number) => {
           {
             var t:array<u32, 8> ;
         
-            t[0] = 0xfffffc2f;
-            t[1] = 0xfffffffe;
-            t[2] = 0xffffffff;
-            t[3] = 0xffffffff;
-            t[4] = 0xffffffff;
-            t[5] = 0xffffffff;
-            t[6] = 0xffffffff;
-            t[7] = 0xffffffff;
+            t[0] = 0xfffffc2fu;
+            t[1] = 0xfffffffeu;
+            t[2] = 0xffffffffu;
+            t[3] = 0xffffffffu;
+            t[4] = 0xffffffffu;
+            t[5] = 0xffffffffu;
+            t[6] = 0xffffffffu;
+            t[7] = 0xffffffffu;
         
             var t4_tmp: array<u32, 8>;for (var i = 0u; i < 8; i = i + 1u) {t4_tmp[i] = t4[i];}
             c = add(&t4, &t4_tmp, &t); // t4 + SECP256K1_P

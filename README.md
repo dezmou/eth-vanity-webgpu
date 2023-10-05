@@ -8,7 +8,8 @@
 
 Choose a brief prefix and/or suffix, then click start. Your browser will generate multiple random addresses until one matches your criteria.
 
-Vanity address generator has been there for a long time, this version unlocks up to 20 time the speed of the CPU version like vanity-eth.tk by using WebGPU
+Vanity address generator has been there for a long time, this version unlocks up to 20 time the speed of the  CPU version like [vanity-eth.tk](https://vanity-eth.tk)
+
 
 
 ## Benchmark
