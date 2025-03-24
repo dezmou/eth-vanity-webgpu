@@ -1,3 +1,5 @@
+2025 update, WebGPU seem to evolve and as last differents tests on differents hardwares, this code does not work anymore
+
 # VANITY-ETH
 
 ## GPU accelerated Ethereum vanity address generator using WebGPU compute shader
