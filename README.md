@@ -1,4 +1,4 @@
-2025 update, WebGPU seem to evolve and as last differents tests on differents hardwares, this code does not work anymore
+2025 update, WebGPU seem to evolve and from last differents tests on differents hardwares, this code does not work anymore
 
 # VANITY-ETH
 
